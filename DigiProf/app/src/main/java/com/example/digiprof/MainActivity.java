@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             //Email verification
                             if(user.isEmailVerified()){
-                                Intent intent = new Intent(MainActivity.this, Login.class);
+                                Intent intent = new Intent(MainActivity.this, VideoActivity.class);
                                 Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_LONG).show();
                                 startActivity(intent);
                             }

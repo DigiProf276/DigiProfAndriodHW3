@@ -11,7 +11,8 @@
         android:theme="@style/Theme.DigiProf">
         <activity android:name=".ForgotPassword" />
         <activity android:name=".UserRegistration" />
-        <activity android:name=".Login" />
+        <activity android:name=".AddVideoActivity" />
+        <activity android:name=".VideoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
