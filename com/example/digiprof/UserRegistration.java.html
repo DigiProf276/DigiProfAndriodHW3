@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>UserRegistration.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+UserRegistration.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.digiprof</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Patterns</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">UserRegistration </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener {</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth auth</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">EditText emailAddress</span><span class="s0">, </span><span class="s1">Password</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">TextView theBanner</span><span class="s0">;</span>
+    <span class="s1">Button RegisterUser</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_user_registration)</span><span class="s0">;</span>
+
+        <span class="s1">auth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">emailAddress = findViewById(R.id.editEmailRegistration)</span><span class="s0">;</span>
+        <span class="s1">Password = findViewById(R.id.editPasswordRegistration)</span><span class="s0">;</span>
+
+        <span class="s1">theBanner = findViewById(R.id.Banner)</span><span class="s0">;</span>
+        <span class="s1">theBanner.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">RegisterUser = findViewById(R.id.RegisterUser)</span><span class="s0">;</span>
+        <span class="s1">RegisterUser.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s0">switch</span><span class="s1">(v.getId()){</span>
+            <span class="s0">case </span><span class="s1">R.id.Banner:</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.RegisterUser:</span>
+                <span class="s1">registerUser()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">registerUser(){</span>
+        <span class="s1">String email = emailAddress.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String password = Password.getText().toString()</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(email.isEmpty()){</span>
+            <span class="s1">emailAddress.setError(</span><span class="s2">&quot;Email is required!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">emailAddress.requestFocus()</span><span class="s0">;</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(Patterns.EMAIL_ADDRESS.matcher(email).matches() == </span><span class="s0">false</span><span class="s1">){</span>
+            <span class="s1">emailAddress.setError(</span><span class="s2">&quot;Please provide a valid email address!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">emailAddress.requestFocus()</span><span class="s0">;</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(password.isEmpty()){</span>
+            <span class="s1">Password.setError(</span><span class="s2">&quot;Password is required!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Password.requestFocus()</span><span class="s0">;</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s0">if</span><span class="s1">(password.length()&lt;</span><span class="s3">6</span><span class="s1">){</span>
+            <span class="s1">Password.setError(</span><span class="s2">&quot;Password length must be at least 6 characters!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Password.requestFocus()</span><span class="s0">;</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Testing 1&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">auth.createUserWithEmailAndPassword(email</span><span class="s0">, </span><span class="s1">password).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Howdy&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">if</span><span class="s1">(task.isSuccessful()){</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Howdy&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">User user = </span><span class="s0">new </span><span class="s1">User(email</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+
+                    <span class="s1">FirebaseDatabase.getInstance().getReference(</span><span class="s2">&quot;Users&quot;</span><span class="s1">).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Void&gt;() {</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Void&gt; thetask) {</span>
+                            <span class="s0">if</span><span class="s1">(thetask.isSuccessful()){</span>
+                                <span class="s1">System.out.println(</span><span class="s2">&quot;Howdy&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                                <span class="s1">Toast.makeText(UserRegistration.</span><span class="s0">this, </span><span class="s2">&quot;User has been registered successfully!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                                <span class="s1">startActivity(</span><span class="s0">new </span><span class="s1">Intent(UserRegistration.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                            <span class="s0">else</span><span class="s1">{</span>
+                                <span class="s1">Toast.makeText(UserRegistration.</span><span class="s0">this, </span><span class="s2">&quot;Failed to register! Please try again!&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Another Howdy&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
