@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.digiprof">
-<!--Permissions-->
+    <!--Permissions-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddVideoActivity"></activity>
-        <activity android:name=".VideoActivity">
+        <activity android:name=".VideosActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

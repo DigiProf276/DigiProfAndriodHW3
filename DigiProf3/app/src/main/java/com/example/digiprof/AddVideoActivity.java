@@ -1,3 +1,4 @@
+
 package com.example.digiprof;
 
 import androidx.annotation.NonNull;
@@ -191,8 +192,8 @@ public class AddVideoActivity extends AppCompatActivity {
                                 videoPickCamera();
                             }
                         }
-                       else if(i==1){
-                           // if gallery is clicked
+                        else if(i==1){
+                            // if gallery is clicked
                             videoPickGallery();
                         }
                     }
@@ -224,22 +225,22 @@ public class AddVideoActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO_PICK_CAMERA_CODE);
     }
-private void setVideoToVideoView(){
-    MediaController mediaController = new MediaController(this);
-    mediaController.setAnchorView(videoView);
+    private void setVideoToVideoView(){
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
 
-    //set media controller to video view
-    videoView.setMediaController(mediaController);
-    //set video uri
-    videoView.setVideoURI(videoUri);
-    videoView.requestFocus();
-    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(MediaPlayer mediaPlayer) {
-            videoView.pause();
-        }
-    });
-}
+        //set media controller to video view
+        videoView.setMediaController(mediaController);
+        //set video uri
+        videoView.setVideoURI(videoUri);
+        videoView.requestFocus();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                videoView.pause();
+            }
+        });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
