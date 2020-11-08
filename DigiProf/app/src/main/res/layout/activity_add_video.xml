@@ -7,7 +7,7 @@
     android:background="@color/colorGray"
     android:padding="10dp"
     tools:context=".AddVideoActivity">
-   <!--Video Title-->
+    <!--Video Title-->
     <EditText
         android:id="@+id/titleEt"
         android:layout_width="match_parent"
@@ -25,18 +25,18 @@
         android:layout_below="@+id/titleEt"
         android:layout_marginTop="5dp"/>
 
-<!--    Upload Video Button-->
-        <Button
-            android:id="@+id/uploadVideoBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/videoView"
-            android:layout_marginTop="5dp"
-            android:text="Upload Video"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorWhite"/>
+    <!--    Upload Video Button-->
+    <Button
+        android:id="@+id/uploadVideoBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/videoView"
+        android:layout_marginTop="5dp"
+        android:text="Upload Video"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"/>
 
-<!--   FAB: Choose Video-->
+    <!--   FAB: Choose Video-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/pickVideoFab"
         android:layout_width="wrap_content"

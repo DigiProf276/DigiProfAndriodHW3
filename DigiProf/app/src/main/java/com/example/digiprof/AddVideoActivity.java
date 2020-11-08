@@ -1,7 +1,17 @@
+
 package com.example.digiprof;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,14 +26,6 @@ import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -190,8 +192,8 @@ public class AddVideoActivity extends AppCompatActivity {
                                 videoPickCamera();
                             }
                         }
-                       else if(i==1){
-                           // if gallery is clicked
+                        else if(i==1){
+                            // if gallery is clicked
                             videoPickGallery();
                         }
                     }
@@ -223,22 +225,22 @@ public class AddVideoActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO_PICK_CAMERA_CODE);
     }
-private void setVideoToVideoView(){
-    MediaController mediaController = new MediaController(this);
-    mediaController.setAnchorView(videoView);
+    private void setVideoToVideoView(){
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
 
-    //set media controller to video view
-    videoView.setMediaController(mediaController);
-    //set video uri
-    videoView.setVideoURI(videoUri);
-    videoView.requestFocus();
-    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(MediaPlayer mediaPlayer) {
-            videoView.pause();
-        }
-    });
-}
+        //set media controller to video view
+        videoView.setMediaController(mediaController);
+        //set video uri
+        videoView.setVideoURI(videoUri);
+        videoView.requestFocus();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                videoView.pause();
+            }
+        });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
