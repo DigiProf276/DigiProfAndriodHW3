@@ -3,6 +3,6 @@
 HW 3, Digiprof on Android
 
 
-Hieu is still not gay guys!!
-
 Not cool man :( 
+
+Oh sorry i will more careful in the future. I am truly sorry for being insentive. 
