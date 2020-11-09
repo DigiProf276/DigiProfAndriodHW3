@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DigiProf.iml" filepath="$PROJECT_DIR$/.idea/modules/DigiProf.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DigiProf.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DigiProf.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DigiProfAndroidHW3.iml" filepath="$PROJECT_DIR$/.idea/modules/DigiProfAndroidHW3.iml" />
     </modules>
   </component>
 </project>
