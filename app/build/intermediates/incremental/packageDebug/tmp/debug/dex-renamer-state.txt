@@ -1,0 +1,4 @@
+#Sat Nov 07 19:47:54 PST 2020
+base.0=C\:\\andy\\astellarius\\cmpt276DigiProf\\DigiProfAndroidHW3\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
