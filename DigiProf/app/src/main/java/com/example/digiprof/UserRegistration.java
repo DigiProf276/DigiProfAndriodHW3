@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class UserRegistration extends AppCompatActivity implements View.OnClickListener {
@@ -84,14 +85,13 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        System.out.println("Testing 1");
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                System.out.println("Howdy");
                 if(task.isSuccessful()){
                     System.out.println("Howdy");
                     User user = new User(email, password);
+
 
                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -100,6 +100,8 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                                 System.out.println("Howdy");
                                 Toast.makeText(UserRegistration.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(UserRegistration.this, MainActivity.class));
+                                FirebaseUser newuser = FirebaseAuth.getInstance().getCurrentUser();
+                                newuser.sendEmailVerification();
                             }
                             else{
                                 Toast.makeText(UserRegistration.this, "Failed to register! Please try again!", Toast.LENGTH_LONG).show();
@@ -107,10 +109,8 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                         }
                     });
                 }
-                else{
-                    System.out.println("Another Howdy");
-                }
             }
         });
+
     }
 }
