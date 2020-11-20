@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DigiProf">
+        <activity android:name=".SendVideoActivity"></activity>
         <activity android:name=".ForgotPassword" />
         <activity android:name=".UserRegistration" />
         <activity android:name=".AddVideoActivity" />

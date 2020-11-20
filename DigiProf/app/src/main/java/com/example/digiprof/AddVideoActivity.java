@@ -29,6 +29,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,6 +57,8 @@ public class AddVideoActivity extends AppCompatActivity {
     private Uri videoUri = null; //uri of picked video
     private String title;
     private ProgressDialog progressDialog;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,9 @@ public class AddVideoActivity extends AppCompatActivity {
 
         //camera permissions
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        //Retrieving user's info
+        auth = FirebaseAuth.getInstance();
 
         // Handle Click, Upload video
         uploadVideoBtn.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +147,10 @@ public class AddVideoActivity extends AppCompatActivity {
                             hashMap.put("timestamp", "" + timestamp);
                             hashMap.put("videoUrl", "" +downloadUri);
 
+                            FirebaseUser user = auth.getCurrentUser();
+                            String owner = user.getEmail();
+                            hashMap.put("Owner", "" + owner);
+
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Videos");
                             reference.child(timestamp)
                                     .setValue(hashMap)
@@ -190,7 +202,7 @@ public class AddVideoActivity extends AppCompatActivity {
                                 videoPickCamera();
                             }
                         }
-                       else if(i==1){
+                        else if(i==1){
                            // if gallery is clicked
                             videoPickGallery();
                         }
