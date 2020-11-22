@@ -25,83 +25,72 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * LoginActivity extends AppCompatActivity
+ */
 public class LoginActivity extends AppCompatActivity {
-    //views
-    EditText mEmailEt, mPasswordEt;
-    TextView notHaveAccountTv, mRecoverPassTv;
-    Button mLoginBtn;
+    EditText emailTextBox, passwordTextBox;
+    TextView noAccountTextView, recoverPasswordTextView;
+    Button loginButton;
+    ProgressDialog progressDialog;
+    ActionBar actionBar;
 
-    // Declare an instance of FirebaseAuth
-    private FirebaseAuth mAuth;
-    //progress dialog
-ProgressDialog pd;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        localObjectsInitialization();
 
-        // ActionBar and its title
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Login");
-        // enable back button
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        //initialize the FirebaseAuth instance.
-        mAuth = FirebaseAuth.getInstance();
+        loginButton.setOnClickListener(v -> loginButtonClickHandler());
 
-        //initialize
-        mEmailEt = findViewById(R.id.emailEt);
-        mPasswordEt = findViewById(R.id.passwordEt);
-        notHaveAccountTv = findViewById(R.id.nothave_accountTv);
-        mLoginBtn = findViewById(R.id.loginBtn);
-        mRecoverPassTv = findViewById(R.id.recoverPassTv);
-
-        //login button clicked
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //input data
-                String email = mEmailEt.getText().toString();
-                String passw = mPasswordEt.getText().toString().trim();
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    //invalid email, show error
-                    mEmailEt.setError("Invalid Email");
-                    mEmailEt.setFocusable(true);
-                }
-                else {
-                    //Valid email pattern
-                    loginUser(email,passw);
-                }
-            }
-        });
-        // Don't have account textview click
-        notHaveAccountTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-                finish();
-            }
-        });
-        //Recover Password Textview click
-        mRecoverPassTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRecoverPasswordDialog();
-            }
+        noAccountTextView.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            finish();
         });
 
-        // initialize progress dialog
-        pd = new ProgressDialog(this);
+        recoverPasswordTextView.setOnClickListener(v -> showRecoverPasswordDialog());
     }
 
+    private void localObjectsInitialization() {
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Login");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        emailTextBox = findViewById(R.id.emailEt);
+        passwordTextBox = findViewById(R.id.passwordEt);
+        noAccountTextView = findViewById(R.id.nothave_accountTv);
+        loginButton = findViewById(R.id.loginBtn);
+        recoverPasswordTextView = findViewById(R.id.recoverPassTv);
+        progressDialog = new ProgressDialog(this);
+    }
+
+    private void loginButtonClickHandler() {
+        String email = emailTextBox.getText().toString();
+        String password = passwordTextBox.getText().toString().trim();
+        boolean emailMatch = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
+        if (emailMatch) {
+            loginUser(email, password);
+        } else {
+            emailTextBox.setError("Invalid Email");
+            emailTextBox.setFocusable(true);
+        }
+    }
+
+    // TODO what does this do? should probably be broken apart
     private void showRecoverPasswordDialog() {
-        //Alert Dialog
+
+        // Alert Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Recover Password");
 
         //set Layout Linear Layout
         LinearLayout linearLayout = new LinearLayout(this);
+
         //views to set in dialog
         EditText emailEt = new EditText(this);
         emailEt.setHint("Email");
@@ -111,98 +100,64 @@ ProgressDialog pd;
         emailEt.setMinEms(16);
 
         linearLayout.addView(emailEt);
-        linearLayout.setPadding(10,10,10,10);
+        linearLayout.setPadding(10, 10, 10, 10);
 
         builder.setView(linearLayout);
 
         //Recover button
-        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //input email
-                String email = emailEt.getText().toString().trim();
-                beginRecovery(email);
-
-            }
+        builder.setPositiveButton("Recover", (dialog, which) -> {
+            //input email
+            String email = emailEt.getText().toString().trim();
+            beginRecovery(email);
         });
+
         //Cancel button
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //dismiss dialog
-                dialog.dismiss();
-
-            }
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            dialog.dismiss();
         });
+
         //show dialog
         builder.create().show();
-
     }
 
     private void beginRecovery(String email) {
-        // show progress dialog
-        pd.setMessage("Sending email...");
-        pd.show();
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                pd.dismiss();
-                if(task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Failed...", Toast.LENGTH_SHORT).show();
-                }
+        progressDialog.setMessage("Sending email...");
+        progressDialog.show();
 
-            }
-        }) .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pd.dismiss();
-                // Show the proper error message
-                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        firebaseAuth
+            .sendPasswordResetEmail(email)
+            .addOnCompleteListener(task -> {
+                progressDialog.dismiss();
+                String taskStatus = task.isSuccessful() ? "Email sent" : "Failed...";
+                Toast.makeText(LoginActivity.this, taskStatus, Toast.LENGTH_SHORT).show();
+            })
+            .addOnFailureListener(error -> {
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            });
     }
 
-    private void loginUser(String email, String passw) {
-        // show progress dialog
-        pd.setMessage("Logging In...");
-        pd.show();
-        mAuth.signInWithEmailAndPassword(email, passw)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //dismiss progress dialog
-                            pd.dismiss();
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            // user logged in, start Login Activity
-                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-                            finish();
+    private void loginUser(String email, String password) {
+        progressDialog.setMessage("Logging In...");
+        progressDialog.show();
 
-                        } else {
-                            //dismiss progress dialog
-                            pd.dismiss();
-                            // If sign in fails, display a message to the user.
-
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                //dismiss progress dialog
-                pd.dismiss();
-                //error, show error message
-                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        firebaseAuth
+            .signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, task -> {
+                progressDialog.dismiss();
+                if (task.isSuccessful()) {
+                    // TODO where is this user object used?
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addOnFailureListener(error -> {
+                progressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            });
     }
 
     @Override

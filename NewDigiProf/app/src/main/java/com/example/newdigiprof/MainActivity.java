@@ -7,34 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * MainActivity extends AppCompatActivity (What does this do?)
+ */
 public class MainActivity extends AppCompatActivity {
-    // views
-    Button mRegisterBtn, mLoginBtn;
+    Button registerButton, loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // initialize views
-        mRegisterBtn = findViewById(R.id.register_btn);
-        mLoginBtn = findViewById(R.id.login_btn);
+        registerButton = findViewById(R.id.register_btn);
+        loginButton = findViewById(R.id.login_btn);
 
-        //handle register button being clicked
-        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start RegisterActivity
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-
-            }
+        registerButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
         });
-        //handle login button clicked
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Start Login Activity
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
+
+        loginButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
     }
 }

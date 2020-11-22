@@ -13,72 +13,69 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * ProfileActivity extends AppCompatActivity (What does it do?)
+ */
 public class ProfileActivity extends AppCompatActivity {
-    //firebase authentication
-    FirebaseAuth firebaseAuth;
-    //views
-    TextView mProfileTv;
+    TextView profileTextView;
+    ActionBar actionBar;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        localObjectInitialization();
 
-        // ActionBar and its title
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Profile");
-
-        //initialize
         firebaseAuth = FirebaseAuth.getInstance();
-
-        //initialize views
-        mProfileTv = findViewById(R.id.profileTv);
-
     }
-    private void checkUserStatus(){
-        // get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user!= null){
-            //user is signed in stay here
-            // set email of logged in user
-            mProfileTv.setText(user.getEmail());
-        }
-        else{
-            //user not signed in, go to main Activity
+    private void localObjectInitialization() {
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Profile");
+        profileTextView = findViewById(R.id.profileTv);
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        boolean currentUserSignedIn = currentUser != null;
+
+        if(currentUserSignedIn) {
+            profileTextView.setText(currentUser.getEmail());
+        } else {
             startActivity(new Intent(ProfileActivity.this,MainActivity.class));
             finish();
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
+
     @Override
     protected void onStart() {
-        //check on start of app
         checkUserStatus();
         super.onStart();
     }
-    //inflate options menu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // inflate menu
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    //handle menu item click
 
+    // TODO What does this do?
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //get item  id
-        int id = item.getItemId();
-        if(id == R.id.action_logout){
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
+        int menuItemID = menuItem.getItemId();
+        if(menuItemID == R.id.action_logout){
             firebaseAuth.signOut();
             checkUserStatus();
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(menuItem);
     }
+
 }
