@@ -1,3 +1,12 @@
+// MainActivity Header
+// Group 13: DigiProf
+// Main Coder: Hieu
+// Modifiers: Harwinder, Andy
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - Added the AddVideo Feature from AddVideoActivity
+// - Implemented MainActivity
 package com.example.digiprof;
 
 import androidx.annotation.NonNull;
@@ -21,8 +30,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+/**
+ * MainActivity Class handles the Login process. It sets up the login screen, takes user inputs and logs the user into the app.
+ */
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView register, ForgotPassword;
     private Button LOGIN;
     private EditText EmailAddress, Password;
@@ -54,65 +65,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.Register:
                 Intent intent = new Intent(this, UserRegistration.class);
                 startActivity(intent);
                 break;
             case R.id.Login:
-                LoginClicks(); break;
+                LoginClicks();
+                break;
             case R.id.ForgotPassword:
                 startActivity(new Intent(this, ForgotPassword.class));
                 break;
         }
     }
 
-    private void LoginClicks(){
-        LOGIN.setOnClickListener(new View.OnClickListener(){
-            @RequiresApi(api = Build.VERSION_CODES.FROYO)
-            @Override public void onClick(View view){
-                String email = EmailAddress.getText().toString();
-                String password = Password.getText().toString();
+    private void LoginClicks() {
+        LOGIN.setOnClickListener(view -> {
+            String email = EmailAddress.getText().toString();
+            String password = Password.getText().toString();
 
-                //Check user's inputs
-                if(email.isEmpty()){
-                    EmailAddress.setError("Please enter your Email!");
-                    EmailAddress.requestFocus();
-                }
+            //Check user's inputs
+            if (email.isEmpty()) {
+                EmailAddress.setError("Please enter your Email!");
+                EmailAddress.requestFocus();
+            }
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    EmailAddress.setError("Please enter a valid email!");
-                    EmailAddress.requestFocus();
-                }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                EmailAddress.setError("Please enter a valid email!");
+                EmailAddress.requestFocus();
+            }
 
-                if(password.isEmpty()){
-                    Password.setError("Please enter passowrd!");
-                    Password.requestFocus();
-                }
+            if (password.isEmpty()) {
+                Password.setError("Please enter passowrd!");
+                Password.requestFocus();
+            }
 
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                            //Email verification
-                            if(user.isEmailVerified()){
-                                Intent intent = new Intent(MainActivity.this, VideoActivity.class);
-                                Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_LONG).show();
-                                startActivity(intent);
-                            }
-                            else {
-                                Toast.makeText(MainActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
-                            }
-
+            auth
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        //Email verification
+                        if (user.isEmailVerified()) {
+                            Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+                            Toast.makeText(MainActivity.this, "Successful Login", Toast.LENGTH_LONG).show();
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
                         }
-                        else{
-                            Toast.makeText(MainActivity.this, "Failed to login!", Toast.LENGTH_LONG).show();
-                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Failed to login!", Toast.LENGTH_LONG).show();
                     }
                 });
-            }
         });
     }
 

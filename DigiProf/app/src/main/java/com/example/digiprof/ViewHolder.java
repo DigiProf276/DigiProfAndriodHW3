@@ -1,3 +1,11 @@
+// VideoActivity Header
+// Primary Coder: Hieu
+// Modifiers: Andy, Harwinder
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - users are only able to view videos that they "own"
+// - Implemented ViewHolder
 package com.example.digiprof;
 
 import android.app.Application;
@@ -28,6 +36,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * ViewHolder Class Displaying videos on the main screen.
+ */
 public class ViewHolder extends RecyclerView.ViewHolder {
 
     private static LinearLayout.LayoutParams params;
@@ -39,16 +50,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void DisplayVideo(Application app, String name, final String url){
-        // Declare playerView
+    public void DisplayVideo(Application app, String name, final String url) {
         TextView textView = itemView.findViewById(R.id.VidTitle);
         playerView = itemView.findViewById(R.id.exoplayerView);
 
-
-        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         textView.setText(name);
+
         try {
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter.Builder(app).build();
             TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
@@ -60,7 +69,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             playerView.setPlayer(exoPlayer);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(false);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 

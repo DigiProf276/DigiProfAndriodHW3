@@ -1,3 +1,11 @@
+// ForgotPassword Header
+// Group 13: DigiProf
+// Primary Coder: Hieu
+// Modifiers: Andy
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - Implemented ForgotPassword
 package com.example.digiprof;
 
 import androidx.annotation.NonNull;
@@ -16,8 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * ForgotPassword Class handles when the user forgets their password.
+ * It takes an email registered with the system and sends an email to reset the password.
+ */
 public class ForgotPassword extends AppCompatActivity implements View.OnClickListener {
-
     private EditText emailAddress;
     private Button Reset;
     private TextView banner;
@@ -42,7 +53,7 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.Banner:
                 startActivity(new Intent(ForgotPassword.this, MainActivity.class));
                 break;
@@ -52,32 +63,30 @@ public class ForgotPassword extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void ClickResetPassword(){
+    private void ClickResetPassword() {
         String email = emailAddress.getText().toString();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             emailAddress.setError("Please enter your email!");
             emailAddress.requestFocus();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailAddress.setError("Please enter a valid email!");
             emailAddress.requestFocus();
             return;
         }
 
-        auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+        auth
+            .sendPasswordResetEmail(email)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
                     Toast.makeText(ForgotPassword.this, "Please check your email!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(ForgotPassword.this, MainActivity.class));
-                }
-                else{
+                } else {
                     Toast.makeText(ForgotPassword.this, "Try again!", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
     }
 }

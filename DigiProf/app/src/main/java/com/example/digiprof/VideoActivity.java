@@ -1,3 +1,10 @@
+// VideoActivity Header
+// Primary Coder: Harwinder
+// Modifiers: Andy
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - Implemented VideoActivity
 package com.example.digiprof;
 
 import android.content.DialogInterface;
@@ -43,6 +50,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+/**
+ * VideoActivity Class - Initializes the main screen where the user can see all uploaded videos,
+ * loads the videos from firebase,
+ * and also shows a button that leads the user to upload a video
+ */
 public class VideoActivity extends AppCompatActivity implements View.OnClickListener {
     // UI Views
     private FloatingActionButton addVideosBtn;
@@ -72,26 +84,21 @@ public class VideoActivity extends AppCompatActivity implements View.OnClickList
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         dataBRef = firebaseDatabase.getReference("Videos");
-
-
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         FirebaseRecyclerOptions<Video> options = new FirebaseRecyclerOptions.Builder<Video>().setQuery(dataBRef, Video.class).build();
-
         FirebaseRecyclerAdapter<Video, ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Video, ViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Video model) {
                 // Show all videos owned by user
-                if(model.getOwner().equals(user.getEmail())) {
+                if (model.getOwner().equals(user.getEmail())) {
                     holder.DisplayVideo(getApplication(), model.getTitle(), model.getVideoUrl());
-                }
-                else{
+                } else {
                     holder.Layout_hide();
                 }
             }
@@ -106,34 +113,31 @@ public class VideoActivity extends AppCompatActivity implements View.OnClickList
 
         firebaseRecyclerAdapter.startListening();
         recyclerView.setAdapter(firebaseRecyclerAdapter);
-
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.addVideosBtn:
-                OptionDialog(); break;
+                OptionDialog();
+                break;
         }
     }
 
-    private void OptionDialog(){
-        // Available options
+    private void OptionDialog() {
         String[] options = {"Send", "Upload"};
-        // dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Video options").setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(which==1){
+
+        builder
+            .setTitle("Video options")
+            .setItems(options, (dialog, which) -> {
+                if (which == 1) {
                     startActivity(new Intent(getApplication(), AddVideoActivity.class));
-                }
-                else{
+                } else {
                     startActivity(new Intent(getApplication(), SendVideoActivity.class));
                 }
-            }
-        }).show();
+            })
+            .show();
     }
-
 
 }

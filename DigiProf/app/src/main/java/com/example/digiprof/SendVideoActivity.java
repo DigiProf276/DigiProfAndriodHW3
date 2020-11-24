@@ -1,3 +1,12 @@
+// VideoActivity Header
+// Primary Coder: Hieu
+// Modifiers: Andy, Harwinder
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - add owner attribute to ModelVideo class
+// - create an xml file for sendvideoactivity
+// - Implemented SendVideoActivity
 package com.example.digiprof;
 
 import androidx.annotation.NonNull;
@@ -38,6 +47,9 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+/**
+ * SendVideoActivity Class sends video to a specific recipient
+ */
 public class SendVideoActivity extends AppCompatActivity implements View.OnClickListener {
     // ActionBar
     private ActionBar actionBar;
@@ -54,17 +66,15 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
     private Uri videoUri = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_video);
 
-        // ActionBar
         actionBar = getSupportActionBar();
         actionBar.setTitle("Send New Video");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // UI Views
         title = findViewById(R.id.titleEt);
         REmail = findViewById(R.id.recipientEmail);
         videoView = findViewById(R.id.videoView);
@@ -81,7 +91,7 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
     // Actions on click
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.sendVideoButton:
                 sendVideo();
                 break;
@@ -123,13 +133,14 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
         // Storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
         // Send video
-        storageReference.putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        storageReference
+            .putFile(videoUri)
+            .addOnSuccessListener(taskSnapshot -> {
                 //Video uploaded successfully, get URL of uploaded video
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isSuccessful()) ;
                 Uri downloadUri = uriTask.getResult();
+
                 if (uriTask.isSuccessful()) {
                     //Url of uploaded video is received
 
@@ -143,78 +154,65 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Videos");
                     reference.child(time)
-                            .setValue(hashMap)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // video details added to database
-                                    Toast.makeText(SendVideoActivity.this, "Video sent...", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Failed adding details to database
-                                    Toast.makeText(SendVideoActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        .setValue(hashMap)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(SendVideoActivity.this, "Video sent...", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(SendVideoActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
                 }
-            }
-        });
+            });
     }
+
     private void videoPickDialog() {
-        //options to display in dialog
-        String [] options = {"Camera", "Gallery"};
-        // dialog
+        String[] options = {"Camera", "Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick Video From")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        if(i==0){
-                            // if camera is clicked
-                            if(!checkCameraPermission()){
-                                //if camera permission is not allowed, request it.
-                                requestCameraPermission();
-                            } else{
-                                //Permissiion already allowed, take picture
-                                videoPickCamera();
-                            }
-                        }
-                        else if(i==1){
-                            // if gallery is clicked
-                            videoPickGallery();
-                        }
+
+        builder
+            .setTitle("Pick Video From")
+            .setItems(options, (dialog, i) -> {
+                int pickCamera = 0;
+                int pickGallery = 1;
+                if (i == pickCamera) {
+                    if (!checkCameraPermission()) {
+                        requestCameraPermission();
+                    } else {
+                        videoPickCamera();
                     }
-                })
-                .show();
+                } else if (i == pickGallery) {
+                    videoPickGallery();
+                }
+            })
+            .show();
     }
 
 
-    private void requestCameraPermission(){
-        //Request Camera Permission
+    private void requestCameraPermission() {
         ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
-    private boolean checkCameraPermission(){
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED;
-        boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)== PackageManager.PERMISSION_GRANTED;
+    private boolean checkCameraPermission() {
+        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) == PackageManager.PERMISSION_GRANTED;
         return result1 && result2;
     }
 
-    private void videoPickGallery(){
+    private void videoPickGallery() {
         // Pick Video From gallery- intent
         Intent intent = new Intent();
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Videos"), VIDEO_PICK_GALLERY_CODE);
     }
-    private void videoPickCamera(){
+
+    private void videoPickCamera() {
         // Pick Video From Camera- intent
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         startActivityForResult(intent, VIDEO_PICK_CAMERA_CODE);
     }
-    private void setVideoToVideoView(){
+
+    private void setVideoToVideoView() {
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
 
@@ -223,26 +221,21 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
         //set video uri
         videoView.setVideoURI(videoUri);
         videoView.requestFocus();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                videoView.pause();
-            }
-        });
+        videoView.setOnPreparedListener(mediaPlayer -> videoView.pause());
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case CAMERA_REQUEST_CODE:
-                if(grantResults.length>0){
+                if (grantResults.length > 0) {
                     //check permission is allowed or not
-                    boolean cameraAccepted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
-                    boolean storageAccepted = grantResults[1]== PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted && storageAccepted){
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && storageAccepted) {
                         //both Permissions allowed
                         videoPickCamera();
-                    }
-                    else{
+                    } else {
                         //both or one permissions denied
                         Toast.makeText(this, "Camera & Storage permission are required", Toast.LENGTH_SHORT).show();
                     }
@@ -255,15 +248,12 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //Called after picking video from camera/gallery
-        if(resultCode==RESULT_OK){
-            if(requestCode== VIDEO_PICK_GALLERY_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == VIDEO_PICK_GALLERY_CODE) {
                 videoUri = data.getData();
-
                 setVideoToVideoView();
-            }
-            else if (requestCode == VIDEO_PICK_CAMERA_CODE){
+            } else if (requestCode == VIDEO_PICK_CAMERA_CODE) {
                 videoUri = data.getData();
-
                 setVideoToVideoView();
             }
         }

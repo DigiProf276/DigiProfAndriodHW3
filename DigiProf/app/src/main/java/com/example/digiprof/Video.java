@@ -1,9 +1,22 @@
+// User Header
+// Group 13: DigiProf
+// Main Coder: Hieu
+// Modifiers: Andy
+// Modifications:
+// - Added Comments and Code Style
+// - Code Review and Testing
+// - Implemented Video
 package com.example.digiprof;
 
+
+/**
+ * Video Class stores a videos information.
+ */
 public class Video {
     String title, videoUrl, timestamp, id, Owner;
 
-    public Video(){}
+    public Video() {
+    }
 
     public String getTitle() {
         return title;
