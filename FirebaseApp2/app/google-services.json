@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1013805816639",
+    "firebase_url": "https://fir-app-ec438.firebaseio.com",
+    "project_id": "fir-app-ec438",
+    "storage_bucket": "fir-app-ec438.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013805816639:android:d0cb28a224c62153",
+        "android_client_info": {
+          "package_name": "com.blogspot.atifsoftwares.firebaseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013805816639-0e1m07o1dfv7u8mc89ed50232l6r5lk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blogspot.atifsoftwares.firebaseapp",
+            "certificate_hash": "0c1dbc2620a049d052ae100a4c5f7d6148dc1233"
+          }
+        },
+        {
+          "client_id": "1013805816639-cv9901sk6shi20adgpcolor4cr1rehk4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOCDVXFAk6yBmP0dORHTuOB7G0hKQpaMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013805816639-cv9901sk6shi20adgpcolor4cr1rehk4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
