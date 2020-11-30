@@ -1,4 +1,4 @@
-// VideoActivity Header
+// SendVideoActivity Header
 // Primary Coder: Hieu
 // Modifiers: Andy, Harwinder
 // Modifications:
