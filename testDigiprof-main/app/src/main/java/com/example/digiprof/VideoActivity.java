@@ -76,7 +76,7 @@ public class VideoActivity extends AppCompatActivity {
 
     }
 
-    private void OptionDialog(){
+    private void OptionDialog() {
         // Available options
         String[] options = {"Send", "Upload"};
         // dialog
@@ -84,10 +84,9 @@ public class VideoActivity extends AppCompatActivity {
         builder.setTitle("Video options").setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(which==1){
+                if (which == 1) {
                     startActivity(new Intent(getApplication(), AddVideoActivity.class));
-                }
-                else{
+                } else {
                     startActivity(new Intent(getApplication(), SendVideoActivity.class));
                 }
             }
@@ -124,37 +123,4 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
     }
-//    @Override
-//    protected void onStart(){
-//        super.onStart();
-//
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        FirebaseRecyclerOptions<ModelVideo> options = new FirebaseRecyclerOptions.Builder<ModelVideo>().setQuery(dataBRef, ModelVideo.class).build();
-//
-//        FirebaseRecyclerAdapter<ModelVideo, ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ModelVideo, ViewHolder>(options) {
-//            @Override
-//            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ModelVideo model) {
-//                // Show all videos owned by user
-//                if (model.getOwner() != null) {
-//                    if (model.getOwner().equals(user.getEmail())) {
-//                        holder.DisplayVideo(getApplication(), model.getTitle(), model.getVideoUrl());
-//                    } else {
-//                        holder.Layout_hide();
-//                    }
-//                }
-//            }
-//
-//            @NonNull
-//            @Override
-//            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
-//                return new ViewHolder(view);
-//            }
-//        };
-//
-//        firebaseRecyclerAdapter.startListening();
-//        videosRv.setAdapter(firebaseRecyclerAdapter);
-//
-//    }
 }
