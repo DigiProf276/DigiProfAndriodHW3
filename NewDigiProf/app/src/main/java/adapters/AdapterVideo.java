@@ -1,11 +1,3 @@
-// AdapterVideo Header
-// Group 13: DigiProf
-// Primary Coder: Harwinder
-// Modifiers: Andy
-// Modifications:
-// - Added Comments and Code Style
-// - Code Review and Testing
-// - Implemented AdapterVideo
 
 package adapters;
 

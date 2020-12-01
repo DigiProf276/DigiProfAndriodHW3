@@ -15,11 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewDigiProf">
         <activity
-            android:name=".SendVideoActivity"
-            android:label="@string/title_activity_send_video" />
+            android:name=".SendVideoActivity" />
         <activity
-            android:name=".AddVideoActivity"
-            android:label="@string/title_activity_add_video" />
+            android:name=".AddVideoActivity" />
         <activity
             android:name=".ChatActivity"
             android:theme="@style/AppThemeNo" />
