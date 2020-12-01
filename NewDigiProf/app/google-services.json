@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "700538706478",
+    "firebase_url": "https://newdigiprof.firebaseio.com",
+    "project_id": "newdigiprof",
+    "storage_bucket": "newdigiprof.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700538706478:android:0a9b64f386d1c674bcddbf",
+        "android_client_info": {
+          "package_name": "com.example.newdigiprof"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700538706478-c21rv7pqhucr4kkdf4nj7n7slda0i7du.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA03weRihhzTjjxGocQyWzMya08-C1BMVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700538706478-c21rv7pqhucr4kkdf4nj7n7slda0i7du.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
