@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1053821973917",
+    "firebase_url": "https://digiprof1.firebaseio.com",
+    "project_id": "digiprof1",
+    "storage_bucket": "digiprof1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053821973917:android:14f9d487d2310f78036b74",
+        "android_client_info": {
+          "package_name": "com.example.firebaseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053821973917-7m5hm7slsa303lsnvs2t0jgvln4a2b6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebaseapp",
+            "certificate_hash": "bc90f3a207bb68498d7f698dff92620d09b23345"
+          }
+        },
+        {
+          "client_id": "1053821973917-g03lk7vh29rf9sv2nhr93eqktjp5nfeb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG6xRW3SW84jyn6Ue7PzxH2oDZLPgBM_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053821973917-g03lk7vh29rf9sv2nhr93eqktjp5nfeb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
