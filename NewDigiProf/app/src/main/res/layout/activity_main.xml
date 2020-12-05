@@ -5,33 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context="com.example.newdigiprof.MainActivity"
+    android:background="@color/colorBlueDull">
+
+
+
+    <!--Button: Register-->
 
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/digi_prof_logo"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="350dp"
         android:layout_marginTop="20dp"
-        />
+        android:src="@drawable/digi_prof_logo"/>
 
-<!--    "Register" Button-->
-        <Button
-            android:id="@+id/register_btn"
-            android:text="Register"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/login_btn"/>
-    <!--    "Login" Button-->
+    <Button
+        android:id="@+id/register_btn"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:background="@color/colorYellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/login_btn"
+        android:layout_centerHorizontal="true"
+        android:drawableStart="@drawable/ic_register_white"
+        android:minWidth="230dp"
+        android:text="@string/register"
+        android:drawableLeft="@drawable/ic_register_white" />
+
+    <!--Button: Login-->
     <Button
         android:id="@+id/login_btn"
-        android:text="Login"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:background="@color/colorYellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:layout_marginTop="5dp"
+        android:drawableStart="@drawable/ic_login_white"
+        android:minWidth="230dp"
+        android:text="@string/login"
+        android:drawableLeft="@drawable/ic_login_white" />
 
+    <TextView
+        android:id="@+id/titleApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="7dp"
+        android:text="@string/digiprof"
+        android:textColor="@color/colorWhite"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleApp"
+        android:layout_marginTop="2dp"
+        android:text="@string/get_help_for_school_wherever_whenever"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp" />
 
 </RelativeLayout>

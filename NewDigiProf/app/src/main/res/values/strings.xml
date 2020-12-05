@@ -13,4 +13,16 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_send_video">SendVideoActivity</string>
     <string name="title_activity_video">VideoActivity</string>
+    <string name="digiprof">DigiProf</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="get_help_for_school_wherever_whenever">Get help for school wherever, whenever</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password_recover"><u>Forgot Password? Recover</u></string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? <u>Register </u></string>
+    <string name="already_have_account_login">Already have account? <u>Login</u></string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="update_password">Update Password</string>
 </resources>

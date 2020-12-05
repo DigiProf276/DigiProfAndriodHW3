@@ -3,7 +3,6 @@ package com.example.newdigiprof;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -11,15 +10,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import Fragment.HomeFragment;
+import Fragment.ProfileFragment;
+import Fragment.UsersFragment;
 import notifications.Token;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import okhttp3.internal.cache.DiskLruCache;
 
 public class DashboardActivity extends AppCompatActivity {
     //firebase authentication

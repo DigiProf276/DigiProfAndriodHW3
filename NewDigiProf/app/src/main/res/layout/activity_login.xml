@@ -5,90 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".LoginActivity">
-    <!--    TextView: Label Login-->
+    tools:context="com.example.newdigiprof.LoginActivity"
+    android:background="@color/colorBlueDull">
+
+
+    <!--TextView: Label Login-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/login"
         android:textAlignment="center"
-        android:text="Login"
-        android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:textSize="45sp"
         android:gravity="center_horizontal" />
 
-    <!--    EditText: Input Email-->
+    <!--EditText: Input Email-->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailTIL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/emailTIL">
+        android:layout_centerVertical="true">
+
         <EditText
             android:id="@+id/emailEt"
-            android:inputType="textEmailAddress"
-            android:hint="Email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:background="@color/colorYellow"
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    EditText: Input Password-->
+
+    <!--EditText: Input Password-->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordTIL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/emailTIL"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:id="@+id/passwordTIL"
-        android:layout_below="@id/emailTIL"
         app:passwordToggleEnabled="true">
 
         <EditText
             android:id="@+id/passwordEt"
-            android:inputType="textPassword"
-            android:hint="Password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:background="@color/colorYellow"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    Button: Register User-->
+
+    <!--Button: Register User-->
     <Button
         android:id="@+id/loginBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordTIL"
+        android:background="@color/colorBlue"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@drawable/ic_login_white"
-        android:text="Login"/>
-<!--    TextView: Recover Password Dialog-->
+        android:drawablePadding="5dp"
+        android:text="Login"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/colorYellow"/>
+
+    <!--TextView: Show dialog to recover password-->
+
     <TextView
         android:id="@+id/recoverPassTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/loginBtn"
+        android:layout_marginTop="47dp"
+        android:text="@string/forgot_password_recover"
         android:textAlignment="center"
-        android:text="Forgot Password? Recover"
-        android:layout_below="@+id/loginBtn"
-        android:textColor="@color/black"
+        android:textColor="@color/colorYellow"
         android:gravity="center_horizontal" />
 
-<!--    Google Sign In Button: Sign-In with google account-->
-<com.google.android.gms.common.SignInButton
-    android:id="@+id/googleLoginBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_below="@id/recoverPassTv">
-
-</com.google.android.gms.common.SignInButton>
-    <!--    TextView: Click go to RegisterActivity-->
     <TextView
         android:id="@+id/nothave_accountTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Register"
+        android:text="@string/don_t_have_an_account_register"
         android:textAlignment="center"
-        android:layout_below="@+id/googleLoginBtn"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="20dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/colorYellow"
+        android:layout_marginBottom="55dp"
+        android:gravity="center_horizontal" />
+
 </RelativeLayout>

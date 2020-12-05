@@ -84,5 +84,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'  //with support libraries
     implementation 'androidx.multidex:multidex:2.0.1'  //with androidx libraries
 
+    // Volley
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
 }

@@ -2,9 +2,6 @@ package adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.newdigiprof.R;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
+import models.ModelChat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,15 +32,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import models.ModelChat;
-
 public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
+
 
     private static final int MSG_TYPE_LEFT = 0;
     private static final int MSG_TYPE_RIGHT = 1;
     Context context;
     List<ModelChat> chatList;
     String imageUrl;
+
     FirebaseUser fUser;
 
     public AdapterChat(Context context, List<ModelChat> chatList, String imageUrl) {
@@ -49,41 +51,57 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
     @NonNull
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //inflate layouts: row_chat_left.xml for receiver, row_Chat_right.xml for sender
-        if (viewType==MSG_TYPE_RIGHT){
-            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_right, parent, false);
+        if (i==MSG_TYPE_RIGHT){
+            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_right, viewGroup, false);
             return new MyHolder(view);
         }
         else {
-            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_left, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_left, viewGroup, false);
             return new MyHolder(view);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
-        // get data
-        String message = chatList.get(position).getMessage();
-        String timeStamp = chatList.get(position).getTimestamp();
+    public void onBindViewHolder(@NonNull MyHolder myHolder, final int i) {
+        //get data
+        String message = chatList.get(i).getMessage();
+        String timeStamp = chatList.get(i).getTimestamp();
+        String type = chatList.get(i).getType();
 
-        //convert timestamp to dd/mm/yyyy hh:mm am/pm format
+        //convert time stamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(timeStamp));
         String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
 
-        // set data
-        holder.messageTv.setText(message);
-        holder.timeTv.setText(dateTime);
+        if (type.equals("text")){
+            //text message
+            myHolder.messageTv.setVisibility(View.VISIBLE);
+            myHolder.messageIv.setVisibility(View.GONE);
+
+            myHolder.messageTv.setText(message);
+        }
+        else {
+            //image message
+            myHolder.messageTv.setVisibility(View.GONE);
+            myHolder.messageIv.setVisibility(View.VISIBLE);
+
+            Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(myHolder.messageIv);
+        }
+
+        //set data
+        myHolder.messageTv.setText(message);
+        myHolder.timeTv.setText(dateTime);
         try {
-            Picasso.get().load(imageUrl).into(holder.profileIv);
+            Picasso.get().load(imageUrl).into(myHolder.profileIv);
         }
         catch (Exception e){
 
         }
 
-//        click to show delete dialog
-        holder.messageLayout.setOnClickListener(new View.OnClickListener() {
+        //click to show delete dialog
+        myHolder.messageLAyout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //show delete message confirm dialog
@@ -95,7 +113,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        deleteMessage(position);
+                        deleteMessage(i);
                     }
                 });
                 //cancel delete button
@@ -111,23 +129,24 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             }
         });
 
-
-        // set seen/delivered status of message
-        if (position == chatList.size()-1){
-            if(chatList.get(position).isSeen()){
-                holder.isSeenTv.setText("Seen");
+        //set seen/delivered status of message
+        if (i==chatList.size()-1){
+            if (chatList.get(i).isSeen()){
+                myHolder.isSeenTv.setText("Seen");
             }
             else {
-                holder.isSeenTv.setText("Delivered");
+                myHolder.isSeenTv.setText("Delivered");
             }
         }
         else {
-            holder.isSeenTv.setVisibility(View.GONE);
+            myHolder.isSeenTv.setVisibility(View.GONE);
         }
     }
 
     private void deleteMessage(int position) {
         final String myUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
         /* Logic:
          * Get timestamp of clicked message
          * Compare the timestamp of the clicked message with all messages in Chats
@@ -140,11 +159,10 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    /*Allow sender to delete only his message then
+                    /*if you want to allow sender to delete only his message then
                     compare sender value with current user's uid
                     if they match means its the message of sender that is trying to delete*/
                     if (ds.child("sender").getValue().equals(myUID)){
-                        /*We can remove the message from Chats & Set the value of message "This message was deleted..."*/
                         //1) Remove the message from Chats"
                         //ds.getRef().removeValue(); //now test this
 
@@ -153,11 +171,14 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
                         hashMap.put("message", "This message was deleted...");
                         ds.getRef().updateChildren(hashMap);
 
-                        Toast.makeText(context, "Message deleted...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "message deleted...", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(context, "You can delete only your messages...", Toast.LENGTH_SHORT).show();
                     }
+
+
+
 
                 }
             }
@@ -168,8 +189,6 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             }
         });
     }
-
-//try t
 
     @Override
     public int getItemCount() {
@@ -189,112 +208,23 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
     }
 
     //view holder class
-    class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder{
 
         //views
-        ImageView profileIv; //, messageIv;
+        ImageView profileIv, messageIv;
         TextView messageTv, timeTv, isSeenTv;
-        LinearLayout messageLayout; //for click listener to show delete
+        LinearLayout messageLAyout; //for click listener to show delete
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
-            //initialize views
+            //init views
             profileIv = itemView.findViewById(R.id.profileIv);
+            messageIv = itemView.findViewById(R.id.messageIv);
             messageTv = itemView.findViewById(R.id.messageTv);
             timeTv = itemView.findViewById(R.id.timeTv);
             isSeenTv = itemView.findViewById(R.id.isSeenTv);
-            messageLayout = itemView.findViewById(R.id.messageLayout);
+            messageLAyout = itemView.findViewById(R.id.messageLayout);
         }
-
     }
 }
-
-
-
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull MyHolder myHolder, final int i) {
-//        //get data
-//        String message = chatList.get(i).getMessage();
-//        String timeStamp = chatList.get(i).getTimestamp();
-////        String type = chatList.get(i).getType();
-//
-//        //convert time stamp to dd/mm/yyyy hh:mm am/pm
-//        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-//        cal.setTimeInMillis(Long.parseLong(timeStamp));
-//        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
-//
-////        if (type.equals("text")){
-////            //text message
-////            myHolder.messageTv.setVisibility(View.VISIBLE);
-////            myHolder.messageIv.setVisibility(View.GONE);
-////
-////            myHolder.messageTv.setText(message);
-////        }
-////        else {
-////            //image message
-////            myHolder.messageTv.setVisibility(View.GONE);
-////            myHolder.messageIv.setVisibility(View.VISIBLE);
-////
-////            Picasso.get().load(message).placeholder(R.drawable.ic_image_black).into(myHolder.messageIv);
-////        }
-//
-//        //set data
-//        myHolder.messageTv.setText(message);
-//        myHolder.timeTv.setText(dateTime);
-//        try {
-//            Picasso.get().load(imageUrl).into(myHolder.profileIv);
-//        }
-//        catch (Exception e){
-//
-//        }
-//
-//        //click to show delete dialog
-//        myHolder.messageLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //show delete message confirm dialog
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setTitle("Delete");
-//                builder.setMessage("Are you sure to delete this message?");
-//                //delete button
-//                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        deleteMessage(i);
-//                    }
-//                });
-//                //cancel delete button
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        //dismiss dialog
-//                        dialog.dismiss();
-//                    }
-//                });
-//                //create and show dialog
-//                builder.create().show();
-//            }
-//        });
-//
-//        //set seen/delivered status of message
-//        if (i==chatList.size()-1){
-//            if (chatList.get(i).isSeen()){
-//                myHolder.isSeenTv.setText("Seen");
-//            }
-//            else {
-//                myHolder.isSeenTv.setText("Delivered");
-//            }
-//        }
-//        else {
-//            myHolder.isSeenTv.setVisibility(View.GONE);
-//        }
-//    }
-//
-//
-//
-//
-//
-

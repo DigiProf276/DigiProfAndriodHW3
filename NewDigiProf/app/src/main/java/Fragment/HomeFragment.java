@@ -1,4 +1,4 @@
-package com.example.newdigiprof;
+package Fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.newdigiprof.AddVideoActivity;
+import com.example.newdigiprof.MainActivity;
+import com.example.newdigiprof.R;
+import com.example.newdigiprof.SendVideoActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,7 +97,7 @@ public class HomeFragment extends Fragment {
         }
         else{
             //user not signed in, go to main Activity
-            startActivity(new Intent(getActivity(),MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
     }
