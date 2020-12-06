@@ -1,9 +1,12 @@
 package com.example.newdigiprof;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Patterns;
@@ -26,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
@@ -35,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText mEmailEt, mPasswordEt;
     TextView notHaveAccntTv, mRecoverPassTv;
     Button mLoginBtn;
+    Button changeLang;
 //    SignInButton mGoogleLoginBtn;
 
     //Declare an instance of FirebaseAuth
@@ -46,24 +52,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_login);
 
         //Actionbar and its title
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Login");
+        assert actionBar != null;
+        actionBar.setTitle(R.string.login);
         //enable back button
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-
-        //before mAuth
-        // Configure Google Sign In
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
-        //In the onCreate() method, initialize the FirebaseAuth instance.
         mAuth = FirebaseAuth.getInstance();
 
         //init
@@ -72,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         notHaveAccntTv = findViewById(R.id.nothave_accountTv);
         mRecoverPassTv = findViewById(R.id.recoverPassTv);
         mLoginBtn = findViewById(R.id.loginBtn);
-//        mGoogleLoginBtn = findViewById(R.id.googleLoginBtn);
+        changeLang = findViewById(R.id.changeMyLang);
 
         //login button click
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 String passw = mPasswordEt.getText().toString().trim();
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     //invalid email paatern set error
-                    mEmailEt.setError("Invalid Email");
+                    mEmailEt.setError(getString(R.string.invalid_email));
                     mEmailEt.setFocusable(true);
                 }
                 else {
@@ -107,31 +106,84 @@ public class LoginActivity extends AppCompatActivity {
                 showRecoverPasswordDialog();
             }
         });
-
-        //handle google login btn click
-//        mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //begin google login process
-//                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-//                startActivityForResult(signInIntent, RC_SIGN_IN);
-//            }
-//        });
-
+        //handle Change Language Button Click
+        changeLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show Alert Dialog to display list of languages, only one can be selected
+                showChangeLanguageDialog();
+            }
+        });
         //init progress dialog
         pd = new ProgressDialog(this);
     }
+    //  Create Separate Strings.xml for each language
+    private void showChangeLanguageDialog() {
+        //Array of languages to display in dialog box
+        final String [] listLangs = {"French (Canada)", " Punjabi", "English"};
+        androidx.appcompat.app.AlertDialog.Builder mBuilder = new androidx.appcompat.app.AlertDialog.Builder(LoginActivity.this);
+        mBuilder.setTitle(R.string.choose_languages);
+        mBuilder.setSingleChoiceItems(listLangs, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                if(i == 0){
+                    //French (Canada)
+                    setLocale("fr");
+                    recreate();
+                }
+                else if(i == 1){
+                    //Punjabi
+                    setLocale("pa");
+                    recreate();
+                }
+
+                else if(i==2){
+                    //English
+                    setLocale("en");
+                    recreate();
+                }
+
+                // dismiss alert dialog
+                dialogInterface.dismiss();
+            }
+        });
+        androidx.appcompat.app.AlertDialog mDialog = mBuilder.create();
+        // show alert dialog
+        mDialog.show();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        // save data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+        editor.putString("My_Lang",lang);
+        editor.apply();
+    }
+
+    // load languages saved in shared preferences
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang", "");
+        setLocale(language);
+    }
+
+
 
     private void showRecoverPasswordDialog() {
         //AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Recover Password");
+        builder.setTitle(R.string.recover_password);
 
         //set layout linear layout
         LinearLayout linearLayout = new LinearLayout(this);
         //views to set in dialog
         final EditText emailEt = new EditText(this);
-        emailEt.setHint("Email");
+        emailEt.setHint(R.string.email);
         emailEt.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         /*sets the min width of a EditView to fit a text of n 'M' letters regardless of the actual text
         extension and text size.*/
@@ -144,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         builder.setView(linearLayout);
 
         //buttons recover
-        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.recover, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //input email
@@ -153,7 +205,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         //buttons cancel
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancell, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //dismiss dialog
@@ -167,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void beginRecovery(String email) {
         //show progresss dialog
-        pd.setMessage("Sending email...");
+        pd.setMessage(getResources().getString(R.string.sending_email));
         pd.show();
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -175,10 +227,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         pd.dismiss();
                         if (task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.email_sent, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Failed...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.failed, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -193,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String email, String passw) {
         //show progresss dialog
-        pd.setMessage("Logging In...");
+        pd.setMessage(getResources().getString(R.string.loggging_in));
         pd.show();
         mAuth.signInWithEmailAndPassword(email, passw)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -211,7 +263,7 @@ public class LoginActivity extends AppCompatActivity {
                             //dismiss progress dialog
                             pd.dismiss();
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -232,81 +284,5 @@ public class LoginActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-//        if (requestCode == RC_SIGN_IN) {
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try {
-//                // Google Sign In was successful, authenticate with Firebase
-//                GoogleSignInAccount account = task.getResult(ApiException.class);
-//                firebaseAuthWithGoogle(account);
-//            } catch (ApiException e) {
-//                // Google Sign In failed, update UI appropriately
-//                Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                // ...
-//            }
-//        }
-//    }
-
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//                            //if user is signing in first time then get and show user info from google account
-//                            if (task.getResult().getAdditionalUserInfo().isNewUser()){
-//                                //Get user email and uid from auth
-//                                String email = user.getEmail();
-//                                String uid = user.getUid();
-//                                //When user is registered store user info in firebase realtime database too
-//                                //using HashMap
-//                                HashMap<Object, String> hashMap = new HashMap<>();
-//                                //put info in hasmap
-//                                hashMap.put("email", email);
-//                                hashMap.put("uid", uid);
-//                                hashMap.put("name", "");
-//                                hashMap.put("onlineStatus", "online");
-//                                hashMap.put("typingTo", "noOne");
-////                                hashMap.put("phone", "");
-//                                hashMap.put("image", "");
-//                                hashMap.put("cover", "");
-//                                //firebase database isntance
-//                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                                //path to store user data named "Users"
-//                                DatabaseReference reference = database.getReference("Users");
-//                                //put data within hashmap in database
-//                                reference.child(uid).setValue(hashMap);
-//                            }
-//                            //show user email in toast
-//                            Toast.makeText(LoginActivity.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-//                            //go to profile activity after logged in
-//                            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-//                            finish();
-//                            //updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Toast.makeText(LoginActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
-//                            //updateUI(null);
-//                        }
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                //get and show error message
-//                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
 }

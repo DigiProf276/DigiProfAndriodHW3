@@ -10,6 +10,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+//import com.example.firebaseapp.fragments.ChatListFragment;
+import Fragment.ChatListFragment;
 import Fragment.HomeFragment;
 import Fragment.ProfileFragment;
 import Fragment.UsersFragment;
@@ -19,41 +21,48 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+//import com.example.firebaseapp.fragments.ChatListFragment;
 
 public class DashboardActivity extends AppCompatActivity {
-    //firebase authentication
+
+    //firebase auth
     FirebaseAuth firebaseAuth;
-    //views
-//    TextView mProfileTv;
+
     ActionBar actionBar;
+
     String mUID;
 
+    private  BottomNavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // ActionBar and its title
+        //Actionbar and its title
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Profile");
+        assert actionBar != null;
+        actionBar.setTitle(R.string.profile);
 
-        //initialize
+        //init
         firebaseAuth = FirebaseAuth.getInstance();
 
         //bottom navigation
-        BottomNavigationView navigationView = findViewById(R.id.navigation);
+        navigationView = findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(selectedListener);
 
-        // home fragment transaction (default, on start)
-        actionBar.setTitle("Home");
+        //home fragment transaction (default, on star)
+        actionBar.setTitle(R.string.home);//change actionbar title
         HomeFragment fragment1 = new HomeFragment();
         FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
-        ft1.replace(R.id.content, fragment1,"");
+        ft1.replace(R.id.content, fragment1, "");
         ft1.commit();
 
         checkUserStatus();
-        //initialize views
-       // mProfileTv = findViewById(R.id.profileTv);
+
+
+
     }
 
     @Override
@@ -71,78 +80,87 @@ public class DashboardActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener selectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem menuitem) {
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     //handle item clicks
-                    switch (menuitem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case R.id.nav_home:
-                        // home fragment transaction
-                            actionBar.setTitle("Home");
+                            //home fragment transaction
+                            actionBar.setTitle(R.string.home);//change actionbar title
                             HomeFragment fragment1 = new HomeFragment();
                             FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
-                            ft1.replace(R.id.content, fragment1,"");
+                            ft1.replace(R.id.content, fragment1, "");
                             ft1.commit();
                             return true;
                         case R.id.nav_profile:
-                            // Profile fragment transaction
-                            actionBar.setTitle("Profile");
+                            //profile fragment transaction
+                            actionBar.setTitle(R.string.profile);//change actionbar title
                             ProfileFragment fragment2 = new ProfileFragment();
                             FragmentTransaction ft2 = getSupportFragmentManager().beginTransaction();
-                            ft2.replace(R.id.content, fragment2,"");
+                            ft2.replace(R.id.content, fragment2, "");
                             ft2.commit();
                             return true;
                         case R.id.nav_users:
-                            // Users fragment transaction
-                            actionBar.setTitle("Users");
+                            //users fragment transaction
+                            actionBar.setTitle(R.string.users);//change actionbar title
                             UsersFragment fragment3 = new UsersFragment();
                             FragmentTransaction ft3 = getSupportFragmentManager().beginTransaction();
-                            ft3.replace(R.id.content, fragment3,"");
+                            ft3.replace(R.id.content, fragment3, "");
                             ft3.commit();
                             return true;
                         case R.id.nav_chat:
-                            // Users fragment transaction
-                            actionBar.setTitle("Chat");
-                            UsersFragment fragment4 = new UsersFragment();
+                            //users fragment transaction
+                            actionBar.setTitle(R.string.chats);//change actionbar title
+                            ChatListFragment fragment4 = new ChatListFragment();
                             FragmentTransaction ft4 = getSupportFragmentManager().beginTransaction();
-                            ft4.replace(R.id.content, fragment4,"");
+                            ft4.replace(R.id.content, fragment4, "");
                             ft4.commit();
                             return true;
+
                     }
+
                     return false;
                 }
             };
 
 
-    private void checkUserStatus(){
-        // get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        if(user!= null){
+    private void checkUserStatus() {
+        //get current user
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
             //user is signed in stay here
-            // set email of logged in user
+            //set email of logged in user
             //mProfileTv.setText(user.getEmail());
             mUID = user.getUid();
 
+            //save uid of currently signed in user in shared preferences
             SharedPreferences sp = getSharedPreferences("SP_USER", MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("Current_USERID", mUID);
             editor.apply();
-        }
-        else{
-            //user not signed in, go to main Activity
-            startActivity(new Intent(DashboardActivity.this,MainActivity.class));
+
+            //update token
+            updateToken(FirebaseInstanceId.getInstance().getToken());
+
+        } else {
+            //user not signed in, go to main acitivity
+            startActivity(new Intent(DashboardActivity.this, MainActivity.class));
             finish();
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
+
     @Override
     protected void onStart() {
         //check on start of app
         checkUserStatus();
         super.onStart();
     }
+
 
 }

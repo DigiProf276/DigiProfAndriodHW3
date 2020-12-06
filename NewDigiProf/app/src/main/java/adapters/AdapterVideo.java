@@ -9,7 +9,10 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.health.SystemHealthManager;
 import android.text.format.DateFormat;
+import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,16 +107,39 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.HolderVideo>
                 String title = modelVideo.getTitle();
                 String timestamp = modelVideo.getTimestamp();
                 String videoUrl = modelVideo.getVideoUrl();
+                String sender = modelVideo.getSender();
+
 
                 //format timestamp eg. 07/09/2020 02:31PM
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.parseLong(timestamp));
                 String formattedDateTime = DateFormat.format("dd/MM/yyyy K:mm a", calendar).toString();
 
-                //set Date
+
+                //set Date & Data
                 holder.titleTv.setText(title);
                 holder.timeTv.setText(formattedDateTime);
+                holder.nameTv.setText(sender);
                 setVideoUri(modelVideo, holder);
+
+
+
+                //Expanding items
+                holder.bind(modelVideo);
+
+                holder.itemView.setOnClickListener(v->{
+                    //Get current state of the item
+                    boolean expanded = modelVideo.isExpanded();
+                    //Change the state
+                    modelVideo.setExpanded(!expanded);
+
+                    //Notify the adapter that item has changed
+                    notifyItemChanged(position);
+
+                });
+
+
+
 
 
                 // Handle Click, Download Video
@@ -318,7 +344,7 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.HolderVideo>
         //UI Views of row_video.xml
 
         PlayerView videoView;
-        TextView titleTv, timeTv;
+        TextView titleTv, timeTv, minimizeTv, nameTv;
         FloatingActionButton deleteFab, downloadFab;
 
         public HolderVideo(@NonNull View itemView) {
@@ -328,8 +354,33 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.HolderVideo>
             videoView = itemView.findViewById(R.id.videoView);
             titleTv = itemView.findViewById(R.id.titleTv);
             timeTv = itemView.findViewById(R.id.timeTv);
+            minimizeTv = itemView.findViewById(R.id.minimizeTv);
+            nameTv = itemView.findViewById(R.id.nameTv);
+
+
             deleteFab = itemView.findViewById(R.id.deleteFab);
             downloadFab = itemView.findViewById(R.id.downloadFab);
+
+
+        }
+
+        private void bind(ModelVideo modelVideo){
+            //Get the state
+            boolean videoExpanded = modelVideo.isExpanded();
+
+            //Set the visibility based on state
+            videoView.setVisibility(videoExpanded? View.VISIBLE:View.GONE);
+            minimizeTv.setVisibility(videoExpanded? View.VISIBLE:View.GONE);
+            titleTv.setVisibility(videoExpanded? View.GONE:View.VISIBLE);
+            timeTv.setVisibility(videoExpanded? View.GONE:View.VISIBLE);
+            nameTv.setVisibility(videoExpanded? View.GONE:View.VISIBLE);
+
+
+
+
+
+
+
 
         }
     }

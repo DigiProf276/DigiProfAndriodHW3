@@ -1,33 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBlack"
-    android:layout_height="match_parent">
+    android:background="@color/purple_200"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/minimizeTv"
+        android:text="click here to minimize"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+
+        android:gravity="center_horizontal" />
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="642dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="471dp"
+        android:layout_marginTop="30dp"
         app:resize_mode="fill" />
 
     <TextView
         android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="sans-serif-condensed"
-        android:shadowColor="@color/colorBlack"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="2"
-        android:layout_above="@id/timeTv"
-        android:text="The title of the video"
-        android:textColor="@color/colorWhite"
         android:textSize="18sp"
-        android:layout_marginLeft="10dp" />
+        android:text="This is the title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginVertical="10dp"
+        android:textColor="@color/colorWhite"
+
+
+        android:shadowRadius="2"
+        android:shadowDy="1"
+        android:shadowDx="1"
+        android:shadowColor="@color/colorBlack"
+        />
+
+
+
+    <TextView
+        android:id="@+id/nameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/titleTv"
+        android:textColor="@color/colorWhite"
+
+        android:shadowRadius="2"
+        android:shadowDy="1"
+        android:shadowDx="1"
+        android:shadowColor="@color/colorBlack"
+        />
+
+
 
     <TextView
         android:id="@+id/timeTv"
@@ -50,9 +84,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save_white"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="80dp"
         app:fabSize="mini"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/deleteFab"
         android:layout_marginRight="18dp"
@@ -72,3 +107,5 @@
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
+
+

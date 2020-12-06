@@ -11,27 +11,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-//import com.example.firebaseapp.AddPostActivity;
-import com.example.newdigiprof.MainActivity;
-import com.example.newdigiprof.R;
-//import com.example.firebaseapp.SettingsActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.example.firebaseapp.adapters.AdapterPosts;
-//import com.example.firebaseapp.models.ModelPost;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.newdigiprof.MainActivity;
+import com.example.newdigiprof.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,12 +48,20 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.newdigiprof.R.string.edit_cover;
+import static com.example.newdigiprof.R.string.edit_name;
+import static com.example.newdigiprof.R.string.edit_password;
+import static com.example.newdigiprof.R.string.edit_profile;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
+
+//import com.example.firebaseapp.AddPostActivity;
+//import com.example.firebaseapp.SettingsActivity;
+//import com.example.firebaseapp.adapters.AdapterPosts;
+//import com.example.firebaseapp.models.ModelPost;
 
 
 /**
@@ -86,7 +81,7 @@ public class ProfileFragment extends Fragment {
 
     //views from xml
     ImageView avatarIv, coverIv;
-    TextView nameTv, emailTv, phoneTv;
+    TextView nameTv, emailTv;
     FloatingActionButton fab;
 //    RecyclerView postsRecyclerView;
 
@@ -99,8 +94,8 @@ public class ProfileFragment extends Fragment {
     private static final int IMAGE_PICK_GALLERY_CODE = 300;
     private static final int IMAGE_PICK_CAMERA_CODE = 400;
     //arrays of permissions to be requested
-    String cameraPermissions[];
-    String storagePermissions[];
+    String[] cameraPermissions;
+    String[] storagePermissions;
 
     //    List<ModelPost> postList;
 //    AdapterPosts adapterPosts;
@@ -162,14 +157,13 @@ public class ProfileFragment extends Fragment {
                     //get data
                     String name = "" + ds.child("name").getValue();
                     String email = "" + ds.child("email").getValue();
-//                    String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
                     String cover = "" + ds.child("cover").getValue();
 
                     //set data
                     nameTv.setText(name);
                     emailTv.setText(email);
-//                    phoneTv.setText(phone);
+
                     try {
                         //if image is received then set
                         Picasso.get().load(image).into(avatarIv);
@@ -202,10 +196,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-//        postList = new ArrayList<>();
-
-//        checkUserStatus();
-//        loadMyPosts();
 
 
         return view;
@@ -216,7 +206,7 @@ public class ProfileFragment extends Fragment {
         //check if storage permission is enabled or not
         //return true if enabled
         //return false if not enabled
-        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        boolean result = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
@@ -230,7 +220,7 @@ public class ProfileFragment extends Fragment {
         //check if storage permission is enabled or not
         //return true if enabled
         //return false if not enabled
-        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+        boolean result = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
                 == (PackageManager.PERMISSION_GRANTED);
 
         boolean result1 = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -251,11 +241,11 @@ public class ProfileFragment extends Fragment {
          * 4) Change Password*/
 
         //options to show in dialog
-        String options[] = {"Edit Profile Picture", "Edit Cover Photo", "Edit Name", "Change Password"};
+        String[] options = {getString(edit_profile), getString(edit_cover), getString(edit_name), getString(edit_password)};
         //alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //set title
-        builder.setTitle("Choose Action");
+        builder.setTitle(getString(R.string.choose_action));
         //set items to dialog
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -263,23 +253,23 @@ public class ProfileFragment extends Fragment {
                 //handle dialog item clicks
                 if (which == 0) {
                     //Edit Profile clicked
-                    pd.setMessage("Updating Profile Picture");
+                    pd.setMessage(requireView().getResources().getString(R.string.update_profile));
                     profileOrCoverPhoto = "image"; //i.e. changing profile picture, make sure to assign same value
                     showImagePicDialog();
                 } else if (which == 1) {
                     //Edit Cover clicked
-                    pd.setMessage("Updating Cover Photo");
+                    pd.setMessage(requireView().getResources().getString(R.string.update_cover));
                     profileOrCoverPhoto = "cover"; //i.e. changing cover photo, make sure to assign same value
                     showImagePicDialog();
                 } else if (which == 2) {
                     //Edit Name clicked
-                    pd.setMessage("Updating Name");
+                    pd.setMessage(requireView().getResources().getString(R.string.update_name));
                     //calling method and pass key "name" as parameter to update it's value in database
                     showNameUpdateDialog("name");
                 }
                 else if (which == 3) {
                     //Edit Password clicked
-                    pd.setMessage("Changing Password");
+                    pd.setMessage(requireView().getResources().getString(R.string.updating_password));
                     showChangePasswordDialog();
                 }
             }
@@ -310,11 +300,11 @@ public class ProfileFragment extends Fragment {
                 String oldPassword = passwordEt.getText().toString().trim();
                 String newPassword = newPasswordEt.getText().toString().trim();
                 if (TextUtils.isEmpty(oldPassword)){
-                    Toast.makeText(getActivity(), "Enter your current password...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.enter_current_password, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (newPassword.length()<6){
-                    Toast.makeText(getActivity(), "Password length must atleast 6 characters...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.password_length_not_six, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -331,7 +321,8 @@ public class ProfileFragment extends Fragment {
         final FirebaseUser user = firebaseAuth.getCurrentUser();
 
         //before changing password re-authenticate the user
-        AuthCredential authCredential = EmailAuthProvider.getCredential(user.getEmail(), oldPassword);
+        assert user != null;
+        AuthCredential authCredential = EmailAuthProvider.getCredential(Objects.requireNonNull(user.getEmail()), oldPassword);
         user.reauthenticate(authCredential)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -344,7 +335,7 @@ public class ProfileFragment extends Fragment {
                                     public void onSuccess(Void aVoid) {
                                         //password updated
                                         pd.dismiss();
-                                        Toast.makeText(getActivity(), "Password Updated...", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), R.string.password_update_success, Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -375,20 +366,20 @@ public class ProfileFragment extends Fragment {
 
         //custom dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Update " + key); //e.g. Update name
+        builder.setTitle(getResources().getString(R.string.update) + key); //e.g. Update name
         //set layout of dialog
         LinearLayout linearLayout = new LinearLayout(getActivity());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(10, 10, 10, 10);
         //add edit text
         final EditText editText = new EditText(getActivity());
-        editText.setHint("Enter " + key); //hint e.g. Edit name
+        editText.setHint(getResources().getString(R.string.enter) + key); //hint e.g. Edit name
         linearLayout.addView(editText);
 
         builder.setView(linearLayout);
 
         //add button in dialog to update
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //input text from edit text
@@ -405,7 +396,7 @@ public class ProfileFragment extends Fragment {
                                 public void onSuccess(Void aVoid) {
                                     //updated, dismiss progress
                                     pd.dismiss();
-                                    Toast.makeText(getActivity(), "Updated...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.updated, Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -417,67 +408,14 @@ public class ProfileFragment extends Fragment {
                                 }
                             });
 
-                    //if user edit his name, also change it from hist posts
-                    if (key.equals("name")) {
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-                        Query query = ref.orderByChild("uid").equalTo(uid);
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    String child = ds.getKey();
-                                    dataSnapshot.getRef().child(child).child("uName").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
-                        //update name in current users comments on posts
-                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    String child = ds.getKey();
-                                    if (dataSnapshot.child(child).hasChild("Comments")) {
-                                        String child1 = "" + dataSnapshot.child(child).getKey();
-                                        Query child2 = FirebaseDatabase.getInstance().getReference("Posts").child(child1).child("Comments").orderByChild("uid").equalTo(uid);
-                                        child2.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                    String child = ds.getKey();
-                                                    dataSnapshot.getRef().child(child).child("uName").setValue(value);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
 
                 } else {
-                    Toast.makeText(getActivity(), "Please enter " + key, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.please_enter + key, Toast.LENGTH_SHORT).show();
                 }
             }
         });
         //add button in dialog to cancel
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancell, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -491,11 +429,11 @@ public class ProfileFragment extends Fragment {
     private void showImagePicDialog() {
         //show dialog containing options Camera and Gallery to pick the image
 
-        String options[] = {"Camera", "Gallery"};
+        String[] options = {getString(R.string.cammmera), getString(R.string.gallllery)};
         //alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //set title
-        builder.setTitle("Pick Image From");
+        builder.setTitle(R.string.pick_image_from);
         //set items to dialog
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -540,14 +478,14 @@ public class ProfileFragment extends Fragment {
                         pickFromCamera();
                     } else {
                         //pemissions denied
-                        Toast.makeText(getActivity(), "Please enable camera & storage permission", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.enable_cammmera_storage_permission, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
             break;
             case STORAGE_REQUEST_CODE: {
 
-                //picking from galler, first check if storage permissions allowed or not
+                //picking from gallery, first check if storage permissions allowed or not
                 if (grantResults.length > 0) {
                     boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAccepted) {
@@ -555,7 +493,7 @@ public class ProfileFragment extends Fragment {
                         pickFromGallery();
                     } else {
                         //pemissions denied
-                        Toast.makeText(getActivity(), "Please enable storage permission", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.enable_storrrage_permission, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -631,6 +569,7 @@ public class ProfileFragment extends Fragment {
                               of them
                               Second Parameter contains the url of the image stored in firebase storage, this
                               url will be saved as value against key "image" or "cover"*/
+                            assert downloadUri != null;
                             results.put(profileOrCoverPhoto, downloadUri.toString());
 
                             databaseReference.child(user.getUid()).updateChildren(results)
@@ -640,7 +579,7 @@ public class ProfileFragment extends Fragment {
                                             //url in database of user is added successfully
                                             //dismiss progress bar
                                             pd.dismiss();
-                                            Toast.makeText(getActivity(), "Image Updated...", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), R.string.image_update_success, Toast.LENGTH_SHORT).show();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -649,14 +588,14 @@ public class ProfileFragment extends Fragment {
                                             //error adding url in database of user
                                             //dismiss progress bar
                                             pd.dismiss();
-                                            Toast.makeText(getActivity(), "Erro Updating Image...", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), R.string.image_update_failed, Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
                         } else {
                             //error
                             pd.dismiss();
-                            Toast.makeText(getActivity(), "Some error occured", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.some_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -687,7 +626,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void pickFromGallery() {
-        //pick from gallery
+        //pick from galleryr
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, IMAGE_PICK_GALLERY_CODE);
@@ -704,7 +643,7 @@ public class ProfileFragment extends Fragment {
         } else {
             //user not signed in, go to main acitivity
             startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().finish();
+            requireActivity().finish();
         }
     }
 

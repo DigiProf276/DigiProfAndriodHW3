@@ -1,7 +1,8 @@
 package models;
 
 public class ModelVideo {
-    String title, videoUrl, timestamp, id, Owner;
+    String title, videoUrl, timestamp, id, Owner,sender;
+    boolean expanded;
 
     public ModelVideo(){}
 
@@ -44,4 +45,12 @@ public class ModelVideo {
     public void setOwner(String owner) {
         Owner = owner;
     }
+
+    public String getSender(){return sender;}
+
+    public void setSender(String sender){this.sender = sender;}
+
+    public boolean isExpanded(){return expanded;};
+
+    public void setExpanded(boolean expanded){this.expanded = expanded;};
 }

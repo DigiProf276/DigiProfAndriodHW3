@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
+    android:orientation="vertical"
     tools:context="com.example.newdigiprof.MainActivity"
+    android:gravity="center"
     android:background="@color/colorBlueDull">
 
 
@@ -19,41 +21,48 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/digi_prof_logo"/>
 
+    <!--Button: Login-->
+
     <Button
         android:id="@+id/register_btn"
         style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:background="@color/colorYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/login_btn"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:background="@color/colorYellow"
         android:drawableStart="@drawable/ic_register_white"
+        android:drawableLeft="@drawable/ic_register_white"
         android:minWidth="230dp"
-        android:text="@string/register"
-        android:drawableLeft="@drawable/ic_register_white" />
+        android:text="@string/register" />
 
-    <!--Button: Login-->
     <Button
         android:id="@+id/login_btn"
         style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:background="@color/colorYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="72dp"
+        android:background="@color/colorYellow"
         android:drawableStart="@drawable/ic_login_white"
+        android:drawableLeft="@drawable/ic_login_white"
         android:minWidth="230dp"
-        android:text="@string/login"
-        android:drawableLeft="@drawable/ic_login_white" />
+        android:text="@string/login" />
 
     <TextView
         android:id="@+id/titleApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/logo"
-        android:layout_marginTop="7dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="-21dp"
         android:text="@string/digiprof"
         android:textColor="@color/colorWhite"
         android:textSize="35sp" />
@@ -63,9 +72,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleApp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="2dp"
         android:text="@string/get_help_for_school_wherever_whenever"
         android:textColor="@color/colorWhite"
         android:textSize="18sp" />
+
+
+    <Button
+        android:id="@+id/changeMyLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/changeLang"
+        android:layout_marginStart="210dp"
+        android:layout_marginLeft="210dp" />
 
 </RelativeLayout>

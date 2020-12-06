@@ -1,2 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">ਡੀਜੀ ਪ੍ਰੋਫ</string>
+    <string name="changeLang">ਭਾਸ਼ਾ ਬਦਲੋ</string>
+
+    <string name="hello_blank_fragment">ਹੈਲੋ ਖਾਲੀ ਭਾਗ</string>
+
+    <string name="login">ਲਾਗਿਨ ਕਰੋ</string>
+    <string name="register">ਰਜਿਸਟਰ ਕਰੋ</string>
+    <string name="get_help_for_school_wherever_whenever">ਸਕੂਲ ਲਈ ਜਿੱਥੇ ਵੀ, ਜਦੋਂ ਵੀ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="email">ਈ - ਮੇਲ</string>
+    <string name="password">ਪਾਸਵਰਡ</string>
+    <string name="forgot_password_recover"><u>ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ? ਮੁੜ ਪ੍ਰਾਪਤ ਕਰੋ</u></string>
+    <string name="don_t_have_an_account_register">ਕੀ ਤੁਹਾਡਾ ਕੋਈ ਖਾਤਾ ਨਹੀਂ ਹੈ? <u>ਰਜਿਸਟਰ ਕਰੋ </u></string>
+    <string name="already_have_account_login">ਪਹਿਲਾਂ ਹੀ ਖਾਤਾ ਹੈ?<u>ਲਾਗਿਨ ਕਰੋ</u></string>
+    <string name="current_password"> ਮੌਜੂਦਾ ਪਾਸਵਰਡ</string>
+    <string name="new_password">ਨਵਾਂ ਪਾਸਵਰਡ</string>
+    <string name="update_password">ਪਾਸਵਰਡ ਅਪਡੇਟ ਕਰੋ</string>
+    <string name="welcome">ਸਵਾਗਤ ਹੈ</string>
+    <string name="digiprof">ਡੀਜੀ ਪ੍ਰੋਫ</string>
+
+    <string name="logout">ਲਾੱਗ ਆਊਟ</string>
+    <string name="his_name">ਉਹਦਾ ਨਾਂਅ</string>
+    <string name="online">.ਨਲਾਈਨ</string>
+    <string name="start_typing">ਟਾਈਪ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ</string>
+    <string name="his_message">ਉਸ ਦਾ ਸੁਨੇਹਾ</string>
+    <string name="_02_03_2019_05_59pm">02/03/2019 05:59PM</string>
+    <string name="delivered">ਦਿੱਤਾ ਗਿਆ</string>
+    <string name="the_last_message">ਆਖਰੀ ਸੁਨੇਹਾ</string>
+    <string name="person_email">ਵਿਅਕਤੀਗਤ ਈਮੇਲ</string>
+    <string name="person_name">ਵਿਅਕਤੀ ਦਾ ਨਾਮ</string>
+
+    <string name="search">ਲੱਭੋ</string>
+    <string name="home">ਹੋਮ</string>
+    <string name="profile">ਪ੍ਰੋਫਾਈਲ</string>
+    <string name="users">ਉਪਭੋਗਤਾ</string>
+    <string name="chats">ਸੁਨੇਹੇ</string>
+
+    <string name="Delete">ਮਿਟਾਓ</string>
+    <string name="confirm_delete">ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਇਸ ਸੁਨੇਹੇ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+
+
+    <string name="seen">ਦੇਖਿਆ ਗਿਆ</string>
+    <string name="delivered_success">ਦਿੱਤਾ ਗਿਆ</string>
+    <string name="Cancel">ਨਹੀਂ</string>
+    <string name="message_was_deleted">ਇਹ ਸੁਨੇਹਾ ਮਿਟਾ ਦਿੱਤਾ ਗਿਆ ਸੀ …</string>
+    <string name="message_deleted">ਸੁਨੇਹਾ ਮਿਟਾਇਆ ਗਿਆ…</string>
+    <string name="cannot_delete">ਤੁਸੀਂ ਸਿਰਫ ਆਪਣੇ ਖੁਦ ਦੇ ਸੰਦੇਸ਼ਾਂ ਨੂੰ ਮਿਟਾ ਸਕਦੇ ਹੋ</string>
+    <!--Profile Edits-->
+    <string name="edit_profile">ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਬਦਲੋ</string>
+    <string name="edit_cover">ਕਵਰ ਫੋਟੋ ਬਦਲੋ</string>
+    <string name="edit_name">ਨਾਮ ਬਦਲੋ</string>
+    <string name="edit_password">ਪਾਸਵਰਡ ਬਦਲੋ</string>
+
+    <!--    Profile Update Messages-->
+    <string name="update_profile">ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
+    <string name="update_cover">ਕਵਰ ਫੋਟੋ ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
+    <string name="update_name">ਨਾਮ ਅਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
+    <string name="updating_password">ਪਾਸਵਰਡ ਬਦਲਿਆ ਜਾ ਰਿਹਾ ਹੈ</string>
+    <string name="choose_action">ਕਾਰਵਾਈ ਚੁਣੋ</string>
+    <string name="enter_current_password">ਆਪਣਾ ਮੌਜੂਦਾ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ …</string>
+    <string name="password_length_not_six">ਪਾਸਵਰਡ ਦੀ ਲੰਬਾਈ ਘੱਟੋ ਘੱਟ 6 ਅੱਖਰਾਂ ਦੀ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ …</string>
+    <string name="password_update_success">ਪਾਸਵਰਡ ਅਪਡੇਟ ਕੀਤਾ ਗਿਆ …</string>
+
+    <string name="update">ਅਪਡੇਟ</string>
+    <string name="enter">ਦਰਜ ਕਰੋ</string>
+    <string name="updated">ਅਪਡੇਟ ਹੋ ਗਿਆ ਹੈ…</string>
+    <string name="please_enter">ਕਿਰਪਾ ਕਰਕੇ ਦਾਖਲ ਕਰੋ</string>
+    <string name="cancell">ਰੱਦ ਕਰੋ</string>
+    <string name="cammmera">ਕੈਮਰਾ</string>
+    <string name="gallllery">ਗੈਲਰੀ</string>
+    <string name="pick_image_from">ਤੋਂ ਚਿੱਤਰ ਚੁਣੋ</string>
+    <string name="enable_cammmera_storage_permission">ਕਿਰਪਾ ਕਰਕੇ ਕੈਮਰਾ ਅਤੇ ਸਟੋਰੇਜ ਅਨੁਮਤੀ ਨੂੰ ਸਮਰੱਥ ਕਰੋ</string>
+    <string name="enable_storrrage_permission">ਕਿਰਪਾ ਕਰਕੇ ਸਟੋਰੇਜ ਅਨੁਮਤੀ ਨੂੰ ਸਮਰੱਥ ਕਰੋ</string>
+    <string name="image_update_success">ਚਿੱਤਰ ਅਪਡੇਟ ਹੋ ਗਿਆ ਹੈ …</string>
+    <string name="image_update_failed">ਚਿੱਤਰ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਗਲਤੀ …</string>
+    <string name="some_error">ਕੁਝ ਗਲਤੀ ਆਈ ਹੈ</string>
+
+
+    <string name="typing_status">ਟਾਈਪਿੰਗ…</string>
+    <string name="not_send_empty_message">ਖਾਲੀ ਸੁਨੇਹਾ ਨਹੀਂ ਭੇਜ ਸਕਦਾ …</string>
+    <string name="new_message">ਨਵਾਂ ਸੁਨੇਹਾ</string>
+    <string name="invalid_email">ਅਵੈਧ ਈਮੇਲ</string>
+    <string name="recover_password">ਪਾਸਵਰਡ ਮੁੜ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="recover">ਮੁੜ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="sending_email">ਈਮੇਲ ਭੇਜ ਰਿਹਾ ਹੈ …</string>
+    <string name="email_sent">ਈਮੇਲ ਭੇਜਿਆ ਗਿਆ</string>
+    <string name="failed">ਅਸਫਲ …</string>
+    <string name="loggging_in">ਲੌਗ ਇਨ ਕਰ ਰਿਹਾ ਹੈ …</string>
+    <string name="authentication_failed">ਪ੍ਰਮਾਣਿਕਤਾ ਅਸਫਲ</string>
+    <string name="choose_languages">ਭਾਸ਼ਾ ਚੁਣੋ …</string>
+    <string name="create_account">ਖਾਤਾ ਬਣਾਉ</string>
+    <string name="registering_user">ਉਪਭੋਗਤਾ ਰਜਿਸਟਰ ਹੋ ਰਿਹਾ ਹੈ …</string>
+    <string name="registered">ਰਜਿਸਟਰਡ…</string>
+
+
+</resources>

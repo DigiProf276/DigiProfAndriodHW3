@@ -48,7 +48,6 @@ import models.ModelUser;
 import notifications.Data;
 import notifications.Sender;
 import notifications.Token;
-import com.example.newdigiprof.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -83,7 +82,7 @@ public class ChatActivity extends AppCompatActivity {
     //views from xml
     Toolbar toolbar;
     RecyclerView recyclerView;
-    ImageView profileIv, blockIv;
+    ImageView profileIv;
     TextView nameTv, userStatusTv;
     EditText messageEt;
     ImageButton sendBtn;
@@ -112,13 +111,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_chat);
 
         //init views
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle(R.string.chats);
         recyclerView = findViewById(R.id.chat_recyclerView);
         profileIv = findViewById(R.id.proifleIv);
         nameTv = findViewById(R.id.nameTv);
@@ -163,7 +161,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     //check typing status
                     if (typingStatus.equals(myUid)) {
-                        userStatusTv.setText("typing...");
+                        userStatusTv.setText(R.string.typing_status);
                     } else {
                         //get value of onlinestatus
                         String onlineStatus = "" + ds.child("onlineStatus").getValue();
@@ -208,7 +206,7 @@ public class ChatActivity extends AppCompatActivity {
                 //check if text is empty or not
                 if (TextUtils.isEmpty(message)) {
                     //text empty
-                    Toast.makeText(ChatActivity.this, "Cannot send the empty message...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, R.string.not_send_empty_message, Toast.LENGTH_SHORT).show();
                 } else {
                     //text not empty
                     sendMessage(message);
@@ -381,7 +379,7 @@ public class ChatActivity extends AppCompatActivity {
                     Data data = new Data(
                             ""+myUid,
                             ""+name + ": " + message,
-                            "New Message",
+                            getString(R.string.new_message),
                             ""+hisUid,
                             "ChatNotification",
                             R.drawable.ic_default_img);
@@ -410,7 +408,7 @@ public class ChatActivity extends AppCompatActivity {
                                 //put params
                                 Map<String, String> headers = new HashMap<>();
                                 headers.put("Content-Type", "application/json");
-                                headers.put("Authorization", "key=AAAAnLoM65c:APA91bE0lEHCeBiNWmpIrZ_uKvKleDRdTP7YmdHdYeWvkQHHRaQ6DXAHjR0elyUH7rrgDkeJVT_TKfBC8OXWjfQqTB23Gg8OleZoJ5cShsNMFrLe8eG8JeSdCbhvMl5gP6BhpN7ThND1");
+                                headers.put("Authorization", "key=AAAA9VyvNZ0:APA91bE9REnH9h8gpDGaDqK2Rp4gCyKMWBnSEFBTBRe8k1-ALjE_vsrxYXL_19d0_AYszEcy5mB2-Z8xrbm3cXh6woFvvuDCXwzEylFLmTg6u1zwCjVINJdlnIlWVNFPDPBQBEyfLztj");
 
                                 return headers;
                             }

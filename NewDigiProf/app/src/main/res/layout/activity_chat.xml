@@ -28,19 +28,19 @@
                 app:c_background_color="@color/colorPrimaryDark" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp">
                 <!--Receiver name-->
                 <TextView
                     android:id="@+id/nameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="His Name"
+                    android:text="@string/his_name"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -49,7 +49,7 @@
                     android:id="@+id/userStatusTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="online"
+                    android:text="@string/online"
                     android:textColor="@color/colorWhite" />
             </LinearLayout>
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="Start typing"
+            android:hint="@string/start_typing"
             android:inputType="textCapSentences|textMultiLine"
             android:padding="15dp" />
         <!--Button: send message-->

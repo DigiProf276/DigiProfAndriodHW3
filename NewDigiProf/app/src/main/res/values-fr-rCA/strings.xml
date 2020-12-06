@@ -1,2 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Professeur Digi</string>
+    <string name="changeLang">Changer de langue</string>
+
+    <string name="hello_blank_fragment">Bonjour fragment vierge</string>
+
+    <string name="login">S\'identifier</string>
+    <string name="register">S\'inscrire</string>
+    <string name="get_help_for_school_wherever_whenever">Obtenez de l\'aide pour l\'école où et quand</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="forgot_password_recover"><u>Mot de passe oublié? Récupérer</u></string>
+    <string name="don_t_have_an_account_register">Vous n\'avez pas de compte? <u> S\'inscrire </u></string>
+    <string name="already_have_account_login">Vous avez déjà un compte? <u> S\'identifier </u></string>
+    <string name="current_password">Mot de passe actuel</string>
+    <string name="new_password">nouveau mot de passe</string>
+    <string name="update_password">Mettre à jour le mot de passe</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="digiprof">Professeur Digi</string>
+
+    <string name="logout">Se déconnecter</string>
+    <string name="his_name">Son nom</string>
+    <string name="online">En ligne</string>
+    <string name="start_typing">Commencer à écrire</string>
+    <string name="his_message">Son message</string>
+    <string name="_02_03_2019_05_59pm">02/03/2019 05:59PM</string>
+    <string name="delivered">Livré</string>
+    <string name="the_last_message">Le dernier message</string>
+    <string name="person_email">Courriel de la personne</string>
+    <string name="person_name">Nom d\'une personne</string>
+
+    <string name="search">Chercher</string>
+    <string name="home">Accueil</string>
+    <string name="profile">Profil</string>
+    <string name="users">Utilisateurs</string>
+    <string name="chats">Des conversations</string>
+
+    <string name="Delete">Supprimer</string>
+    <string name="confirm_delete">Etes-vous sur de vouloir supprimer ce message?</string>
+
+
+    <string name="seen">Été vu</string>
+    <string name="delivered_success">Livré</string>
+    <string name="Cancel">Non</string>
+    <string name="message_was_deleted">Ce message a été supprimé…</string>
+    <string name="message_deleted">Message supprimé…</string>
+    <string name="cannot_delete">Vous ne pouvez supprimer que vos propres messages</string>
+    <!--Profile Edits-->
+    <string name="edit_profile">Éditer la photo de profil</string>
+    <string name="edit_cover">Modifier la photo de couverture</string>
+    <string name="edit_name">Modifier le nom</string>
+    <string name="edit_password">Changer le mot de passe</string>
+
+    <!--    Profile Update Messages-->
+    <string name="update_profile">L\'image de profil est en cours de mise à jour</string>
+    <string name="update_cover">La photo de couverture est mise à jour</string>
+    <string name="update_name">Le nom est en cours de mise à jour</string>
+    <string name="updating_password">Changer le mot de passe</string>
+    <string name="choose_action">Choisir une action</string>
+    <string name="enter_current_password">"Entrer votre mot de passe actuel…"</string>
+    <string name="password_length_not_six">La longueur du mot de passe doit comporter au moins 6 caractères…</string>
+    <string name="password_update_success">Mot de passe mis à jour…</string>
+
+    <string name="update">Mise à jour_</string>
+    <string name="enter">Enter_</string>
+    <string name="updated">Actualisé…</string>
+    <string name="please_enter">Entrez s\'il vous plait</string>
+    <string name="cancell">Annuler</string>
+    <string name="cammmera">Caméra</string>
+    <string name="gallllery">Galerie</string>
+    <string name="pick_image_from">Choisir une image à partir de</string>
+    <string name="enable_cammmera_storage_permission">Veuillez activer la caméra et l\'autorisation de stockage</string>
+    <string name="enable_storrrage_permission">Veuillez activer l\'autorisation de stockage</string>
+    <string name="image_update_success">Image mise à jour…</string>
+    <string name="image_update_failed">Erreur lors de la mise à jour de l\'image…</string>
+    <string name="some_error">Une erreur est survenue</string>
+
+    <string name="typing_status">dactylographie…</string>
+    <string name="not_send_empty_message">Impossible d\'envoyer un message vide…</string>
+    <string name="new_message">Nouveau message</string>
+    <string name="invalid_email">Email invalide</string>
+    <string name="recover_password">Récupérer mot de passe</string>
+    <string name="recover">Récupérer</string>
+    <string name="sending_email">Envoi d\'un e-mail…</string>
+    <string name="email_sent">Email envoyé</string>
+    <string name="failed">Échoué…</string>
+    <string name="loggging_in">Se connecter…</string>
+    <string name="authentication_failed">Authentification échouée</string>
+    <string name="choose_languages">Choisissez la langue…</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="registering_user">Enregistrement de l\'utilisateur…</string>
+    <string name="registered">Inscrit…</string>
+
+</resources>

@@ -43,19 +43,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String savedCurrentUser = sp.getString("Current_USERID", "None");
 
         String notificationType = remoteMessage.getData().get("notificationType");
-//        if (notificationType.equals("PostNotification")){
-//            //post notification
-//            String sender = remoteMessage.getData().get("sender");
-//            String pId = remoteMessage.getData().get("pId");
-//            String pTitle = remoteMessage.getData().get("pTitle");
-//            String pDescription = remoteMessage.getData().get("pDescription");
-//
-//            //if user is same that has posted don't show notification
-////            if (!sender.equals(savedCurrentUser)){
-////                showPostNotification(""+pId, ""+pTitle, ""+pDescription);
-////            }
-//        }
-//        else
+
         if (notificationType.equals("ChatNotification")){
             //chat notification
             String sent = remoteMessage.getData().get("sent");

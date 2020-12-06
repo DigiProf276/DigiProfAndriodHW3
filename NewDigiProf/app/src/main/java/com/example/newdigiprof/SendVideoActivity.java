@@ -16,6 +16,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,11 +40,19 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import models.ModelUser;
+
 public class SendVideoActivity extends AppCompatActivity implements View.OnClickListener {
     // ActionBar
     private ActionBar actionBar;
+
+
+    //firebase auth
+    FirebaseAuth firebaseAuth;
+
+
     // UI Views
-    private EditText title, REmail;
+    private EditText title, REmail, userNameEt;
     private VideoView videoView;
     private Button sendVideoButton;
     private FloatingActionButton pickVideoFab;
@@ -64,9 +74,14 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //Initialize firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance();
+
         // UI Views
         title = findViewById(R.id.titleEt);
         REmail = findViewById(R.id.recipientEmail);
+        userNameEt = findViewById(R.id.yourNameEt);
+
         videoView = findViewById(R.id.videoView);
 
         sendVideoButton = findViewById(R.id.sendVideoButton);
@@ -95,6 +110,11 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
         // Getting title and recipient's email
         String theTitle = title.getText().toString();
         String email = REmail.getText().toString();
+        String userNameTextBox = userNameEt.getText().toString();
+
+        String userName =  "Name: "+ userNameTextBox + firebaseAuth.getCurrentUser().getDisplayName();
+
+
 
         // Check if all the inputs are valid
         if (theTitle.isEmpty()) {
@@ -136,10 +156,16 @@ public class SendVideoActivity extends AppCompatActivity implements View.OnClick
                     //Now add video details to firebase database
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("id", "" + time);
-                    hashMap.put("title", "" + title);
+                    hashMap.put("title", "" + theTitle);
                     hashMap.put("timestamp", "" + time);
                     hashMap.put("videoUrl", "" + downloadUri);
                     hashMap.put("Owner", "" + email);
+                    //Trying to add sender into the video object
+                    hashMap.put("sender", "" + userName);
+
+
+
+
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Videos");
                     reference.child(time)

@@ -1,10 +1,16 @@
 package com.example.newdigiprof;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -24,12 +30,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
 
     //views
     EditText mEmailEt, mPasswordEt;
-    Button mRegisterBtn;
+    Button mRegisterBtn, changeLang;
     TextView mHaveAccountTv;
 
     //progressbar to display while registering user
@@ -41,11 +48,13 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_register);
 
         //Actionbar and its title
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Create Account");
+        assert actionBar != null;
+        actionBar.setTitle(R.string.create_account);
         //enable back button
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -55,14 +64,22 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordEt = findViewById(R.id.passwordEt);
         mRegisterBtn = findViewById(R.id.registerBtn);
         mHaveAccountTv = findViewById(R.id.have_accountTv);
+        changeLang = findViewById(R.id.changeMyLang);
 
         //In the onCreate() method, initialize the FirebaseAuth instance.
         mAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering User...");
+        progressDialog.setMessage(getResources().getString(R.string.registering_user));
 
-
+        //handle Change Language Button Click
+        changeLang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show Alert Dialog to display list of languages, only one can be selected
+                showChangeLanguageDialog();
+            }
+        });
         //handle register btn click
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +90,11 @@ public class RegisterActivity extends AppCompatActivity {
                 //validate
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     //set error and focuss to email edittext
-                    mEmailEt.setError("Invalid Email");
+                    mEmailEt.setError(getResources().getString(R.string.invalid_email));
                     mEmailEt.setFocusable(true);
                 } else if (password.length() < 6) {
                     //set error and focuss to password edittext
-                    mPasswordEt.setError("Password length at least 6 characters");
+                    mPasswordEt.setError(getResources().getString(R.string.password_length_not_six));
                     mPasswordEt.setFocusable(true);
                 } else {
                     registerUser(email, password); //register the user
@@ -94,6 +111,60 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    //  Create Separate Strings.xml for each language
+    private void showChangeLanguageDialog() {
+        //Array of languages to display in dialog box
+        final String [] listLangs = {"French (Canada)", " Punjabi", "English"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegisterActivity.this);
+        mBuilder.setTitle(R.string.choose_languages);
+        mBuilder.setSingleChoiceItems(listLangs, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                if(i == 0){
+                    //French (Canada)
+                    setLocale("fr");
+                    recreate();
+                }
+                else if(i == 1){
+                    //Punjabi
+                    setLocale("pa");
+                    recreate();
+                }
+
+                else if(i==2){
+                    //English
+                    setLocale("en");
+                    recreate();
+                }
+
+                // dismiss alert dialog
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        // show alert dialog
+        mDialog.show();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        // save data to shared preferences
+        SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+        editor.putString("My_Lang",lang);
+        editor.apply();
+    }
+    // load languages saved in shared preferences
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+        String language = prefs.getString("My_Lang", "");
+        setLocale(language);
     }
 
     private void registerUser(String email, String password) {
@@ -118,12 +189,11 @@ public class RegisterActivity extends AppCompatActivity {
                             //put info in hasmap
                             hashMap.put("email", email);
                             hashMap.put("uid", uid);
-                            hashMap.put("name", ""); //will add later (e.g. edit profile)
-                            hashMap.put("onlineStatus", "online"); //will add later (e.g. edit profile)
-                            hashMap.put("typingTo", "noOne"); //will add later (e.g. edit profile)
-                            //hashMap.put("phone", ""); //will add later (e.g. edit profile)
-                            hashMap.put("image", ""); //will add later (e.g. edit profile)
-                            hashMap.put("cover", ""); //will add later (e.g. edit profile)
+                            hashMap.put("name", "");
+                            hashMap.put("onlineStatus", "online");
+                            hashMap.put("typingTo", "noOne");
+                            hashMap.put("image", "");
+                            hashMap.put("cover", "");
 
                             //firebase database isntance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -132,13 +202,13 @@ public class RegisterActivity extends AppCompatActivity {
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
-                            Toast.makeText(RegisterActivity.this, "Registered...\n"+user.getEmail(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, R.string.registered +user.getEmail(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
                         }
 
                     }
