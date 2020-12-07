@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="out">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/intermediates/project_dex_archive/debug/out/b7b246220668ea26d478b2fc850d97bb9ea97989db709c9f1fa09b68914def2f_0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/intermediates/project_dex_archive/debug/out/b7b246220668ea26d478b2fc850d97bb9ea97989db709c9f1fa09b68914def2f_1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/intermediates/project_dex_archive/debug/out/b7b246220668ea26d478b2fc850d97bb9ea97989db709c9f1fa09b68914def2f_2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/intermediates/project_dex_archive/debug/out/b7b246220668ea26d478b2fc850d97bb9ea97989db709c9f1fa09b68914def2f_3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
